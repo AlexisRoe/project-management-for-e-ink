@@ -6,14 +6,17 @@ import './Button.component.css';
 interface ButtonProps {
     children: ReactElement | string;
     variant?: 'primary' | 'secondary';
+    size?: 'default' | 'small';
     onClick?: () => void;
     disabled?: boolean;
     className?: string;
 }
 
-export function Button({ className, variant = 'primary', children, onClick, disabled = false }: ButtonProps): JSX.Element {
+export function Button({ className, variant = 'primary', size = 'default', children, onClick, disabled = false }: ButtonProps): JSX.Element {
+    const combinedClassName = [className, size === 'small' ? 'button-small' : undefined].filter(Boolean).join(' ') || undefined;
+
     return (
-        <e-button className={className} variant={variant} onClick={onClick} disabled={disabled}>
+        <e-button className={combinedClassName} variant={variant} onClick={onClick} disabled={disabled}>
             {children}
         </e-button>
     );
@@ -21,11 +24,13 @@ export function Button({ className, variant = 'primary', children, onClick, disa
 
 interface CancelButtonProps {
     onClick: () => void;
+    size?: 'default' | 'small';
+    className?: string;
 }
 
-export function CancelButton({ onClick }: CancelButtonProps): JSX.Element {
-    return <Button variant="secondary" onClick={onClick}>
-        <Icon variant='close' label="close" />
+export function CancelButton({ onClick, size = 'default', className }: CancelButtonProps): JSX.Element {
+    return <Button variant="secondary" size={size} className={className} onClick={onClick}>
+        <Icon variant='close' label="close" size={size === 'small' ? '16' : '24'} />
     </Button>
 }
 
@@ -84,6 +89,27 @@ interface AddButtonProps {
 export function AddButton({ onClick }: AddButtonProps): JSX.Element {
     return <Button variant="primary" onClick={onClick}>
         <Icon variant='plus' label="update or create" />
+    </Button>
+}
+
+interface MoveButtonProps {
+    onClick: () => void;
+    isActive?: boolean;
+}
+
+export function MoveButton({ onClick, isActive = false }: MoveButtonProps): JSX.Element {
+    return <Button variant={isActive ? 'primary' : 'secondary'} onClick={onClick}>
+        <Icon variant='arrowR' label="move" />
+    </Button>
+}
+
+interface DetailButtonProps {
+    onClick: () => void;
+}
+
+export function DetailButton({ onClick }: DetailButtonProps): JSX.Element {
+    return <Button variant="primary" onClick={onClick}>
+        <Icon variant='pen' label="open item" />
     </Button>
 }
 

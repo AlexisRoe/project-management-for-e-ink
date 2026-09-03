@@ -77,6 +77,33 @@ type EInputProps = Props<EInput> & {
   spellcheck?: string
 }
 
+type ETextareaProps = Props<ETextarea> & {
+  value?: string
+  placeholder?: string
+  name?: string
+  error?: boolean | string
+  'error-message'?: string
+  disabled?: boolean | string
+  readonly?: boolean | string
+  required?: boolean | string
+  'required-message'?: string
+  minlength?: number
+  maxlength?: number
+  autocomplete?: string
+  inputmode?: string
+  enterkeyhint?: string
+  spellcheck?: string
+}
+
+type ESegmentedProps = Props<ESegmented> & {
+  value?: string
+}
+
+type ESegmentProps = Props<ESegment> & {
+  value?: string
+  label?: string
+}
+
 declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
@@ -149,8 +176,8 @@ declare module 'react' {
       'e-radio-group': Props<ERadioGroup>
       'e-result': Props<EResult>
       'e-ribbon': Props<ERibbon>
-      'e-segment': Props<ESegment>
-      'e-segmented': Props<ESegmented>
+      'e-segment': ESegmentProps
+      'e-segmented': ESegmentedProps
       'e-select': Props<ESelect>
       'e-skeleton': Props<ESkeleton>
       'e-space': Props<ESpace>
@@ -165,7 +192,7 @@ declare module 'react' {
       'e-tabs': Props<ETabs>
       'e-tag': Props<ETag>
       'e-text': ETextProps
-      'e-textarea': Props<ETextarea>
+      'e-textarea': ETextareaProps
       'e-time-picker': Props<ETimePicker>
       'e-timeline': Props<ETimeline>
       'e-timeline-item': Props<ETimelineItem>

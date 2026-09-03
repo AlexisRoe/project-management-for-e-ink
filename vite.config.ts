@@ -43,6 +43,9 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/setupTests.ts'],
   },
+  server: {
+    port: 9001,
+  },
   preview: {
     headers: {
       'Content-Security-Policy':

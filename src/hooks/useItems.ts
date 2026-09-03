@@ -16,6 +16,21 @@ export type UpdateItemInput = Partial<
   Pick<ProjectItem, 'title' | 'description' | 'column' | 'startDate' | 'endDate' | 'position'>
 >
 
+export function useProjectItems(projectId: string | undefined) {
+  const items = useLiveQuery(
+    async () =>
+      projectId
+        ? await db.items.where('projectId').equals(projectId).sortBy('position')
+        : [],
+    [projectId],
+  )
+
+  return {
+    items: items ?? [],
+    isLoading: items === undefined,
+  }
+}
+
 export function useItem(itemId: string | undefined) {
   const item = useLiveQuery(
     async () => (itemId ? await db.items.get(itemId) : undefined),
@@ -41,6 +56,18 @@ export function useItem(itemId: string | undefined) {
     updateItem,
     deleteItem,
   }
+}
+
+export function useItemActions() {
+  const deleteItem = useCallback(async (itemId: string) => {
+    await db.items.delete(itemId)
+  }, [])
+
+  const moveItem = useCallback(async (itemId: string, column: ColumnStatus) => {
+    await db.items.update(itemId, { column, updatedAt: Date.now() })
+  }, [])
+
+  return { deleteItem, moveItem }
 }
 
 export function useCreateItem(projectId: string | undefined) {

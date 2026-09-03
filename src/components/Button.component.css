@@ -6,3 +6,9 @@
 .button-basic-reset {
     min-height: 52px;
 }
+
+.button-small .ink-btn {
+    padding: 6px;
+    min-height: 32px;
+    min-width: 32px;
+}
