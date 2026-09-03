@@ -59,6 +59,10 @@ export function useProjects() {
     return project
   }, [])
 
+  const updateProject = useCallback(async (projectId: string, name: string) => {
+    await db.projects.update(projectId, { name, updatedAt: Date.now() })
+  }, [])
+
   const deleteProject = useCallback(async (projectId: string) => {
     await db.transaction('rw', db.projects, db.items, async () => {
       await db.items.where('projectId').equals(projectId).delete()
@@ -70,6 +74,19 @@ export function useProjects() {
     projects: projectSummaries ?? [],
     isLoading: projectSummaries === undefined,
     createProject,
+    updateProject,
     deleteProject,
+  }
+}
+
+export function useProject(projectId: string | undefined) {
+  const project = useLiveQuery(
+    async () => (projectId ? await db.projects.get(projectId) : undefined),
+    [projectId],
+  )
+
+  return {
+    project,
+    isLoading: project === undefined,
   }
 }

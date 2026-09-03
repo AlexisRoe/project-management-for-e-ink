@@ -1,4 +1,4 @@
-import { useState, type JSX, type ReactElement } from 'react';
+import { useState, type JSX, type ReactNode } from 'react';
 
 import { CancelButton, CreateButton, DeleteButton, EditButton, OpenButton } from './Button.component';
 import { Input } from './Input.component';
@@ -7,7 +7,7 @@ import { ProgressBar, ProgressBarLegend } from './Progress.component';
 import './Projects.component.css';
 
 interface ProjectGridProps {
-    children: ReactElement | ReactElement[];
+    children: ReactNode;
 }
 
 export function ProjectGrid(props: ProjectGridProps): JSX.Element {
@@ -48,6 +48,7 @@ function ProjectCardUpdate({ eyebrow, initialValue = '', isVisible, onClose, onC
                         label="Project name"
                         placeholder="Example"
                         onDebouncedChange={setValue}
+                        initialValue={initialValue}
                     />
                 </div>
                 <div className='project-cards-actions'>

@@ -20,7 +20,7 @@ export function Input(props: InputProps): JSX.Element {
             label={props.label}
             placeholder={props.placeholder}
             hint={props.hint ?? ''}
-            value={value}
+            default-value={value}
             type="text"
             error={props.error ?? ''}
             onInput={(e) => setValue(e.currentTarget.value)}

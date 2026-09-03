@@ -1,26 +1,20 @@
-import { Link } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 import Page from '../components/Page.component'
-
-const items = [
-  { id: '1', title: 'Buy tiles' },
-  { id: '2', title: 'Hire electrician' },
-  { id: '3', title: 'Order cabinets' },
-]
+import { useProject } from '../hooks/useProjects'
 
 function PlanningView() {
+  const [searchParams] = useSearchParams();
+  const projectId = searchParams.get('projectId') ?? undefined;
+  const { project, isLoading } = useProject(projectId);
+
   return (
     <Page>
       <Page.Header>
-        <h1>Planning</h1>
+        <Link to="/">&larr; Back to projects</Link>
+        <h1>{isLoading ? 'Loading…' : project?.name ?? 'Project not found'}</h1>
       </Page.Header>
       <Page.Content>
-        <ul>
-          {items.map((item) => (
-            <li key={item.id}>
-              <Link to={`/item/${item.id}`}>{item.title}</Link>
-            </li>
-          ))}
-        </ul>
+        {project && <p>Project ID: {project.id}</p>}
       </Page.Content>
     </Page>
   )

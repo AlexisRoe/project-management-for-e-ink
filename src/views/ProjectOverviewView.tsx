@@ -3,23 +3,17 @@ import { Title, TitleLabel } from '../components/Text.component'
 import { Button } from '../components/Button.component'
 import { Icon } from '../components/Icons.component'
 import { ProjectCard, ProjectGrid } from '../components/Projects.component'
+import { EmptyState } from '../components/EmptyState.component'
 import { useState } from 'react'
-
-const MockItem = {
-  todo: 2,
-  inProgress: 5,
-  testing: 0,
-  done: 3,
-}
-
-const MockActions = {
-  update: (title: string) => console.log(title),
-  delete: () => console.log(''),
-  open: () => console.log(''),
-}
+import { useNavigate } from 'react-router'
+import { useProjects } from '../hooks/useProjects'
 
 function ProjectOverviewView() {
   const [isCreateInitialiazed, setIsCreateInitialiazed] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const { projects, createProject, updateProject, deleteProject } = useProjects();
+
+  const isEmpty = projects.length === 0 && !isCreateInitialiazed;
 
   return (
     <Page>
@@ -41,14 +35,33 @@ function ProjectOverviewView() {
         </Page.Header.Right>
       </Page.Header>
       <Page.Content>
-        <ProjectGrid>
-          <ProjectCard.Update
-            isVisible={isCreateInitialiazed}
-            onClose={() => setIsCreateInitialiazed(false)}
-            onCreate={() => console.log('')}
-          />
-          <ProjectCard title='test' items={MockItem} actions={MockActions} />
-        </ProjectGrid>
+        {isEmpty
+          ? <EmptyState icon="search" />
+          : <ProjectGrid>
+            <ProjectCard.Update
+              isVisible={isCreateInitialiazed}
+              onClose={() => setIsCreateInitialiazed(false)}
+              onCreate={(name) => createProject(name)}
+            />
+            {projects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                title={project.name}
+                items={{
+                  todo: project.itemsByColumn.todo,
+                  inProgress: project.itemsByColumn['in-progress'],
+                  testing: project.itemsByColumn.testing,
+                  done: project.itemsByColumn.done,
+                }}
+                actions={{
+                  open: () => navigate(`/planning?projectId=${project.id}`),
+                  update: (name) => updateProject(project.id, name),
+                  delete: () => deleteProject(project.id),
+                }}
+              />
+            ))}
+          </ProjectGrid>
+        }
       </Page.Content>
     </Page>
   )
