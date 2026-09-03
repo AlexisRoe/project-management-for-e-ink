@@ -13,7 +13,7 @@ const MockItem = {
 }
 
 const MockActions = {
-  update: () => console.log(''),
+  update: (title: string) => console.log(title),
   delete: () => console.log(''),
   open: () => console.log(''),
 }

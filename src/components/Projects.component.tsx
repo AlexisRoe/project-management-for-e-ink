@@ -20,9 +20,10 @@ interface ProjectCardUpdateProps {
     onCreate: (label: string) => void;
     title?: string
     initialValue?: string;
+    eyebrow?: string;
 }
 
-function ProjectCardUpdate({ initialValue = '', isVisible, onClose, onCreate, title = 'New Project' }: ProjectCardUpdateProps): JSX.Element {
+function ProjectCardUpdate({ eyebrow, initialValue = '', isVisible, onClose, onCreate, title = 'New Project' }: ProjectCardUpdateProps): JSX.Element {
     const [value, setValue] = useState<string>(initialValue);
 
     if (isVisible === false) return <></>;
@@ -38,6 +39,7 @@ function ProjectCardUpdate({ initialValue = '', isVisible, onClose, onCreate, ti
         <e-card
             className='project-cards'
             title={title}
+            eyebrow={eyebrow ?? ''}
             data-type='new-card'
         >
             <div className='project-cards-content'>
@@ -63,7 +65,7 @@ interface Items {
 }
 
 interface ItemActions {
-    update: () => void;
+    update: (title: string) => void;
     delete: () => void;
     open: () => void;
 }
@@ -79,9 +81,24 @@ function sum(input: number[]): number {
 }
 
 function ProjectCard(props: ProjectCardProps): JSX.Element {
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+
     const total = sum(Object.values(props.items));
     const done = props.items.done;
     const doneInPercent = total === 0 ? 0 : (done * 100) / total;
+
+    if (isEditing) {
+        return (
+            <ProjectCardUpdate
+                isVisible
+                title={props.title}
+                eyebrow={`${total} ITEMS`}
+                initialValue={props.title}
+                onClose={() => setIsEditing(false)}
+                onCreate={(title) => props.actions.update(title)}
+            />
+        );
+    }
 
     return (
         <e-card
@@ -97,7 +114,7 @@ function ProjectCard(props: ProjectCardProps): JSX.Element {
                 <div className='project-cards-actions'>
                     <div className='project-cards-actions-left'>
                         <OpenButton onClick={props.actions.open} />
-                        <EditButton onClick={() => console.log('')} />
+                        <EditButton onClick={() => setIsEditing(true)} />
                     </div>
                     <DeleteButton onClick={props.actions.delete} />
                 </div>
