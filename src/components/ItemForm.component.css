@@ -6,28 +6,17 @@
   padding-top: 30px;
 }
 
-.item-form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.item-form-label {
-  color: #000;
-  font-size: 15px;
-}
-
-.item-form-field e-segmented {
+.item-form .field-group e-segmented {
   display: flex;
   width: 100%;
 }
 
-.item-form-field .ink-segmented {
+.item-form .field-group .ink-segmented {
   display: flex;
   width: 100%;
 }
 
-.item-form-field .ink-segmented__btn {
+.item-form .field-group .ink-segmented__btn {
   flex: 1;
 }
 

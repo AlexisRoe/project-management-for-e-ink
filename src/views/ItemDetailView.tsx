@@ -1,14 +1,16 @@
-import { useState } from 'react'
+import { useState, type JSX } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router'
+
 import Page from '../components/Page.component'
 import { Title, TitleLabel } from '../components/Text.component'
 import { CancelButton, CreateButton, DeleteButton } from '../components/Button.component'
-import { useProject } from '../hooks/useProjects'
-import { useCreateItem, useItem } from '../hooks/useItems'
 import { Icon } from '../components/Icons.component'
 import { ItemForm, type ItemFormValue } from '../components/ItemForm.component'
 
-function ItemDetailView() {
+import { useProject } from '../hooks/useProjects'
+import { useCreateItem, useItem } from '../hooks/useItems'
+
+function ItemDetailView(): JSX.Element {
   const { itemId } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -22,6 +24,10 @@ function ItemDetailView() {
 
   const isLoading = isProjectLoading || (!isCreateMode && isItemLoading);
 
+  const goBack = () => {
+    navigate(`/planning?projectId=${projectId}`);
+  }
+
   const handleSave = async () => {
     if (!formValue || formValue.title.trim().length === 0) return
 
@@ -31,20 +37,15 @@ function ItemDetailView() {
       await updateItem(formValue)
     }
 
-    navigate(`/planning?projectId=${projectId}`)
+    goBack();
   }
 
   const handleDelete = async () => {
     await deleteItem()
-    navigate(`/planning?projectId=${projectId}`)
+    goBack();
   }
 
-  const handleAbort = () => {
-    navigate(`/planning?projectId=${projectId}`)
-  }
-
-  const leftIcon = <Icon variant='chevL' size='16' onClick={handleAbort} />
-
+  const leftIcon = <Icon variant='chevL' size='16' onClick={goBack} />
 
   return (
     <Page>
@@ -59,7 +60,7 @@ function ItemDetailView() {
             onClick={handleSave}
             disabled={!formValue || formValue.title.trim().length === 0}
           />
-          <CancelButton onClick={handleAbort} />
+          <CancelButton onClick={goBack} />
           {!isCreateMode && <DeleteButton onClick={handleDelete} />}
         </Page.Header.Right>
       </Page.Header>

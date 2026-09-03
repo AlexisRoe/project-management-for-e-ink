@@ -12,19 +12,44 @@ const COLUMN_OPTIONS: { value: ColumnStatus; label: string }[] = [
     { value: 'done', label: 'Done' },
 ];
 
+/** Current values held by an {@link ItemForm}. */
 export interface ItemFormValue {
+    /** Item title. */
     title: string;
+    /** Longer free-text description of the item. */
     description: string;
+    /** Kanban column the item is assigned to. */
     column: ColumnStatus;
 }
 
 interface ItemFormProps {
+    /** Title to seed the form with, e.g. when editing an existing item. */
     initialTitle?: string;
+    /** Description to seed the form with, e.g. when editing an existing item. */
     initialDescription?: string;
+    /** Column to seed the form with, e.g. when editing an existing item. Defaults to `'todo'`. */
     initialColumn?: ColumnStatus;
+    /**
+     * Called with the full form value on mount and again after every field
+     * change, so the parent always has an up-to-date value to persist on save.
+     */
     onChange: (value: ItemFormValue) => void;
 }
 
+/**
+ * Form for creating or editing a {@link ItemFormValue}: title, description
+ * and column. Holds its own field state and reports the current value to
+ * the parent via `onChange`, which is responsible for persisting it.
+ *
+ * @example
+ * <ItemForm
+ *   key={item?.id ?? 'new'}
+ *   initialTitle={item?.title}
+ *   initialDescription={item?.description}
+ *   initialColumn={item?.column}
+ *   onChange={setFormValue}
+ * />
+ */
 export function ItemForm(props: ItemFormProps): JSX.Element {
     const [title, setTitle] = useState(props.initialTitle ?? '');
     const [description, setDescription] = useState(props.initialDescription ?? '');
@@ -32,7 +57,6 @@ export function ItemForm(props: ItemFormProps): JSX.Element {
 
     useEffect(() => {
         props.onChange({ title, description, column });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleTitleChange = (value: string) => {
@@ -60,19 +84,19 @@ export function ItemForm(props: ItemFormProps): JSX.Element {
                 onDebouncedChange={handleTitleChange}
                 debounceMs={0}
             />
-            <div className="item-form-field">
-                <e-text className="item-form-label" kind="label" as="span">DESCRIPTION</e-text>
-                <Textarea
-                    placeholder="Describe this item…"
-                    initialValue={description}
-                    onDebouncedChange={handleDescriptionChange}
-                    debounceMs={0}
-                />
-            </div>
-            <div className="item-form-field">
-                <e-text className="item-form-label" kind="label" as="span">COLUMN</e-text>
-                <Segmented options={COLUMN_OPTIONS} value={column} onChange={handleColumnChange} />
-            </div>
+            <Textarea
+                label="Description"
+                placeholder="Describe this item…"
+                initialValue={description}
+                onDebouncedChange={handleDescriptionChange}
+                debounceMs={0}
+            />
+            <Segmented
+                label="Column"
+                options={COLUMN_OPTIONS}
+                value={column}
+                onChange={handleColumnChange}
+            />
         </div>
     );
 }

@@ -2,6 +2,8 @@ import { useEffect, useRef, type JSX } from 'react';
 
 import { useDebouncedInput } from '../hooks/useDebouncedInput';
 
+import './Input.component.css';
+
 interface InputProps {
     label?: string;
     placeholder?: string;
@@ -29,6 +31,7 @@ export function Input(props: InputProps): JSX.Element {
 }
 
 interface TextareaProps {
+    label?: string;
     placeholder?: string;
     error?: boolean | string;
     initialValue?: string;
@@ -40,12 +43,15 @@ export function Textarea(props: TextareaProps): JSX.Element {
     const [value, setValue] = useDebouncedInput(props.initialValue ?? '', props.onDebouncedChange, props.debounceMs ?? 300);
 
     return (
-        <e-textarea
-            placeholder={props.placeholder}
-            value={value}
-            error={props.error ?? ''}
-            onInput={(e) => setValue(e.currentTarget.value)}
-        ></e-textarea>
+        <div className="field-group">
+            {props.label && <e-text className="field-label" kind="label" as="span">{props.label}</e-text>}
+            <e-textarea
+                placeholder={props.placeholder}
+                value={value}
+                error={props.error ?? ''}
+                onInput={(e) => setValue(e.currentTarget.value)}
+            ></e-textarea>
+        </div>
     );
 }
 
@@ -55,6 +61,7 @@ interface SegmentedOption {
 }
 
 interface SegmentedProps {
+    label?: string;
     options: SegmentedOption[];
     value: string;
     onChange: (value: string) => void;
@@ -77,10 +84,13 @@ export function Segmented(props: SegmentedProps): JSX.Element {
     }, [props.onChange]);
 
     return (
-        <e-segmented ref={ref} value={props.value}>
-            {props.options.map((option) => (
-                <e-segment key={option.value} value={option.value} label={option.label}></e-segment>
-            ))}
-        </e-segmented>
+        <div className="field-group">
+            {props.label && <e-text className="field-label" kind="label" as="span">{props.label}</e-text>}
+            <e-segmented ref={ref} value={props.value}>
+                {props.options.map((option) => (
+                    <e-segment key={option.value} value={option.value} label={option.label}></e-segment>
+                ))}
+            </e-segmented>
+        </div>
     );
 }
