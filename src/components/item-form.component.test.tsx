@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import '@marcomattes/epaper-components'
 
-import { ItemForm } from './ItemForm.component'
+import { ItemForm } from './item-form.component'
 
 describe('ItemForm', () => {
   it('renders the title, description and column fields with their initial values', () => {

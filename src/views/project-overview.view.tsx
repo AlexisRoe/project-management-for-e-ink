@@ -1,13 +1,13 @@
 import { useRef, useState, type JSX } from 'react'
 import { useNavigate } from 'react-router'
 
-import Page from '../components/Page.component'
-import { Title, TitleLabel } from '../components/Text.component'
-import { Button } from '../components/Button.component'
-import { Icon } from '../components/Icons.component'
-import { ProjectCard, ProjectGrid } from '../components/Projects.component'
-import { EmptyState } from '../components/EmptyState.component'
-import { FileInput } from '../components/Input.component'
+import Page from '../components/page.component'
+import { Title, TitleLabel } from '../components/text.component'
+import { Button } from '../components/button.component'
+import { Icon } from '../components/icons.component'
+import { ProjectCard, ProjectGrid } from '../components/projects.component'
+import { EmptyState } from '../components/empty-state.component'
+import { FileInput } from '../components/input.component'
 
 import { useProjects } from '../hooks/use-projects.hook'
 

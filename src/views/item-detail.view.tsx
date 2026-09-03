@@ -1,11 +1,11 @@
 import { useState, type JSX } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router'
 
-import Page from '../components/Page.component'
-import { Title, TitleLabel } from '../components/Text.component'
-import { CancelButton, CreateButton, DeleteButton } from '../components/Button.component'
-import { Icon } from '../components/Icons.component'
-import { ItemForm, type ItemFormValue } from '../components/ItemForm.component'
+import Page from '../components/page.component'
+import { Title, TitleLabel } from '../components/text.component'
+import { Button } from '../components/button.component'
+import { Icon } from '../components/icons.component'
+import { ItemForm, type ItemFormValue } from '../components/item-form.component'
 
 import LoadingView from './loading.view'
 import ErrorView from './error.view'
@@ -74,13 +74,13 @@ function ItemDetailView(): JSX.Element {
           <Title>{title}</Title>
         </Page.Header.Left>
         <Page.Header.Right>
-          <CreateButton
+          <Button.Create
             label='Save'
             onClick={handleSave}
             disabled={!formValue || formValue.title.trim().length === 0}
           />
-          <CancelButton onClick={goBack} />
-          {!isCreateMode && <DeleteButton onClick={handleDelete} />}
+          <Button.Cancel onClick={goBack} />
+          {!isCreateMode && <Button.Delete onClick={handleDelete} />}
         </Page.Header.Right>
       </Page.Header>
       <Page.Content>

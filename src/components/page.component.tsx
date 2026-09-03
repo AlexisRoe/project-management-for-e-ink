@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react'
 
-import './Page.component.css'
+import './page.component.css'
 
+/** Props for {@link Page}. */
 interface PageProps {
+  /** Page content, typically a `Page.Header` and `Page.Content`. */
   children: ReactNode
 }
 
@@ -20,7 +22,9 @@ function Page({ children }: PageProps) {
   return <div className="page">{children}</div>
 }
 
+/** Props for {@link Page.Header}. */
 interface PageHeaderProps {
+  /** Header content, typically `Page.Header.Left` and/or `Page.Header.Right`. */
   children: ReactNode
 }
 
@@ -34,7 +38,9 @@ function PageHeader({ children }: PageHeaderProps) {
   return <header className="page-header">{children}</header>
 }
 
+/** Props for {@link Page.Header.Left}. */
 interface PageHeaderLeftProps {
+  /** Left-aligned header content. */
   children: ReactNode
 }
 
@@ -51,7 +57,9 @@ function PageHeaderLeft({ children }: PageHeaderLeftProps) {
   return <div className="page-header-left">{children}</div>
 }
 
+/** Props for {@link Page.Header.Right}. */
 interface PageHeaderRightProps {
+  /** Right-aligned header content. */
   children: ReactNode
 }
 
@@ -72,7 +80,9 @@ function PageHeaderRight({ children }: PageHeaderRightProps) {
 PageHeader.Left = PageHeaderLeft
 PageHeader.Right = PageHeaderRight
 
+/** Props for {@link Page.Content}. */
 interface PageContentProps {
+  /** Main body content. */
   children: ReactNode
 }
 

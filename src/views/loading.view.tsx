@@ -1,8 +1,8 @@
 import type { JSX } from 'react'
 
-import Page from '../components/Page.component'
-import { Title, TitleLabel } from '../components/Text.component'
-import { EmptyState } from '../components/EmptyState.component'
+import Page from '../components/page.component'
+import { Title, TitleLabel } from '../components/text.component'
+import { EmptyState } from '../components/empty-state.component'
 
 interface LoadingViewProps {
   /** Label shown above the title, e.g. the project or workspace name. */

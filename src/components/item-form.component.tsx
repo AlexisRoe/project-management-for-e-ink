@@ -1,9 +1,9 @@
 import { useEffect, useState, type JSX } from 'react';
 
-import { Input, Segmented, Textarea } from './Input.component';
+import { Input, Segmented, Textarea } from './input.component';
 import type { ColumnStatus } from '../db/types';
 
-import './ItemForm.component.css';
+import './item-form.component.css';
 
 const COLUMN_OPTIONS: { value: ColumnStatus; label: string }[] = [
     { value: 'todo', label: 'To do' },

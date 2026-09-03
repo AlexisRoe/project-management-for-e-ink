@@ -4,13 +4,13 @@ import { useNavigate, useSearchParams } from 'react-router'
 import { useProject, useProjects } from '../hooks/use-projects.hook'
 import { useItemActions, useProjectItems } from '../hooks/use-items.hook'
 
-import Page from '../components/Page.component'
-import { Title, TitleLabel } from '../components/Text.component';
-import { Icon } from '../components/Icons.component';
-import { AddButton, BackButton } from '../components/Button.component';
-import { ProgressBar, ProgressContainer, ProgressOverview } from '../components/Progress.component';
-import { Board, MoveBanner } from '../components/Board.component';
-import { Item } from '../components/Item.component';
+import Page from '../components/page.component'
+import { Title, TitleLabel } from '../components/text.component';
+import { Icon } from '../components/icons.component';
+import { Button } from '../components/button.component';
+import { ProgressBar, ProgressContainer, ProgressOverview } from '../components/progress.component';
+import { Board, MoveBanner } from '../components/board.component';
+import { Item } from '../components/item.component';
 
 import type { ColumnStatus } from '../db/types';
 
@@ -72,8 +72,8 @@ function PlanningView(): JSX.Element {
             <ProgressBar value={completionPercentage} />
             <ProgressOverview done={doneCount} total={itemCount} />
           </ProgressContainer>
-          <AddButton onClick={handleAdd} />
-          <BackButton onClick={handleBack} />
+          <Button.Add onClick={handleAdd} />
+          <Button.Back onClick={handleBack} />
         </Page.Header.Right>
       </Page.Header>
       {movingItem && (
