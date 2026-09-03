@@ -3,7 +3,7 @@ import type { JSX } from "react";
 interface IconProps {
     label?: string;
     size?: '16' | '24' | '40';
-    variant: 'chevL' | 'upload' | 'download' | 'plus' | 'close' | 'check' | 'trash' | 'edit' | 'eye' | 'search' | 'pen' | 'arrowR';
+    variant: 'chevL' | 'upload' | 'download' | 'plus' | 'close' | 'check' | 'trash' | 'edit' | 'eye' | 'search' | 'pen' | 'arrowR' | 'moon' | 'refresh';
     onClick?: () => void;
 }
 

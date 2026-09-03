@@ -7,9 +7,17 @@ import { CancelButton, CreateButton, DeleteButton } from '../components/Button.c
 import { Icon } from '../components/Icons.component'
 import { ItemForm, type ItemFormValue } from '../components/ItemForm.component'
 
-import { useProject } from '../hooks/useProjects'
-import { useCreateItem, useItem } from '../hooks/useItems'
+import LoadingView from './loading.view'
+import ErrorView from './error.view'
 
+import { useProject } from '../hooks/use-projects.hook'
+import { useCreateItem, useItem } from '../hooks/use-items.hook'
+
+/**
+ * View for creating a new item or viewing and editing an existing one.
+ * Lets the user save their changes, cancel back to the planning board,
+ * or delete the item.
+ */
 function ItemDetailView(): JSX.Element {
   const { itemId } = useParams();
   const [searchParams] = useSearchParams();
@@ -45,14 +53,25 @@ function ItemDetailView(): JSX.Element {
     goBack();
   }
 
+  const title = isCreateMode ? 'New Item' : item?.title ?? 'Item';
+  const titleLabel = project?.name ?? 'LOCAL · NO ACCOUNT · NO NETWORK';
+
+  if (isLoading) {
+    return <LoadingView title={title} titleLabel={titleLabel} />
+  }
+
+  if (project === undefined) {
+    return <ErrorView message='Project is not defined' />
+  }
+
   const leftIcon = <Icon variant='chevL' size='16' onClick={goBack} />
 
   return (
     <Page>
       <Page.Header>
         <Page.Header.Left>
-          <TitleLabel iconLeft={leftIcon}>{project?.name ?? 'LOCAL · NO ACCOUNT · NO NETWORK'}</TitleLabel>
-          <Title>{isCreateMode ? 'New Item' : item?.title ?? 'Item'}</Title>
+          <TitleLabel iconLeft={leftIcon}>{titleLabel}</TitleLabel>
+          <Title>{title}</Title>
         </Page.Header.Left>
         <Page.Header.Right>
           <CreateButton
@@ -65,15 +84,13 @@ function ItemDetailView(): JSX.Element {
         </Page.Header.Right>
       </Page.Header>
       <Page.Content>
-        {isLoading ? 'Loading…' : (
-          <ItemForm
-            key={item?.id ?? 'new'}
-            initialTitle={item?.title}
-            initialDescription={item?.description}
-            initialColumn={item?.column}
-            onChange={setFormValue}
-          />
-        )}
+        <ItemForm
+          key={item?.id ?? 'new'}
+          initialTitle={item?.title}
+          initialDescription={item?.description}
+          initialColumn={item?.column}
+          onChange={setFormValue}
+        />
       </Page.Content>
     </Page>
   )

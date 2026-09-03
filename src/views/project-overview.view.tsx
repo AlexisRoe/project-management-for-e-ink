@@ -1,26 +1,29 @@
+import { useRef, useState, type JSX } from 'react'
+import { useNavigate } from 'react-router'
+
 import Page from '../components/Page.component'
 import { Title, TitleLabel } from '../components/Text.component'
 import { Button } from '../components/Button.component'
 import { Icon } from '../components/Icons.component'
 import { ProjectCard, ProjectGrid } from '../components/Projects.component'
 import { EmptyState } from '../components/EmptyState.component'
-import { useRef, useState } from 'react'
-import { useNavigate } from 'react-router'
-import { useProjects } from '../hooks/useProjects'
+import { FileInput } from '../components/Input.component'
 
-function ProjectOverviewView() {
+import { useProjects } from '../hooks/use-projects.hook'
+
+/**
+ * Landing view listing all projects as cards, with each card's progress
+ * broken down by column. Lets the user create, rename, or delete a
+ * project, open a project's planning board, and export or import the
+ * full project data as JSON.
+ */
+function ProjectOverviewView(): JSX.Element {
   const [isCreateInitialiazed, setIsCreateInitialiazed] = useState<boolean>(false);
   const navigate = useNavigate();
   const { projects, createProject, updateProject, deleteProject, exportData, importData } = useProjects();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isEmpty = projects.length === 0 && !isCreateInitialiazed;
-
-  const handleImportFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) importData(file);
-    e.target.value = '';
-  };
 
   return (
     <Page>
@@ -36,12 +39,10 @@ function ProjectOverviewView() {
           <Button variant="secondary" onClick={() => fileInputRef.current?.click()}>
             <Icon variant="upload" label="upload data" />
           </Button>
-          <input
+          <FileInput
             ref={fileInputRef}
-            type="file"
             accept="application/json"
-            style={{ display: 'none' }}
-            onChange={handleImportFileSelected}
+            onFileSelected={importData}
           />
           <Button onClick={() => setIsCreateInitialiazed(true)}>
             <Icon variant="plus" label="add project" />

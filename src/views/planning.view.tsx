@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, type JSX } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 
-import { useProject, useProjects } from '../hooks/useProjects'
-import { useItemActions, useProjectItems } from '../hooks/useItems'
+import { useProject, useProjects } from '../hooks/use-projects.hook'
+import { useItemActions, useProjectItems } from '../hooks/use-items.hook'
 
 import Page from '../components/Page.component'
 import { Title, TitleLabel } from '../components/Text.component';
@@ -11,9 +11,22 @@ import { AddButton, BackButton } from '../components/Button.component';
 import { ProgressBar, ProgressContainer, ProgressOverview } from '../components/Progress.component';
 import { Board, MoveBanner } from '../components/Board.component';
 import { Item } from '../components/Item.component';
+
 import type { ColumnStatus } from '../db/types';
 
-function PlanningView() {
+import ErrorView from './error.view'
+
+/**
+ * Board view for a single project: shows its items grouped by column,
+ * progress toward completion, and lets the user add items, move items
+ * between columns, delete items, or open an item's detail view.
+ *
+ * Opportunities:
+ * - Surface a loading state while the project/items are being fetched,
+ *   similar to {@link LoadingView}, instead of rendering with defaults.
+ * - Handle the "project not found" case distinctly from a generic error.
+ */
+function PlanningView(): JSX.Element {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const projectId = searchParams.get('projectId') ?? undefined;
@@ -24,7 +37,7 @@ function PlanningView() {
   const [movingItemId, setMovingItemId] = useState<string | undefined>(undefined);
 
   if (project === undefined) {
-    return <div>Something went wrong</div>
+    return <ErrorView message='Project is undefined' />
   }
 
   const movingItem = items.find((item) => item.id === movingItemId);

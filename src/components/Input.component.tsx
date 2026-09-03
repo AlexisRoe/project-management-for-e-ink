@@ -1,6 +1,7 @@
-import { useEffect, useRef, type JSX } from 'react';
+import { forwardRef, useEffect, useRef, type JSX } from 'react';
+import type { ESegmented } from '@marcomattes/epaper-components';
 
-import { useDebouncedInput } from '../hooks/useDebouncedInput';
+import { useDebouncedInput } from '../hooks/use-debounced.hook';
 
 import './Input.component.css';
 
@@ -29,6 +30,29 @@ export function Input(props: InputProps): JSX.Element {
         ></e-input>
     );
 }
+
+interface FileInputProps {
+    accept?: string;
+    onFileSelected: (file: File) => void;
+}
+
+export const FileInput = forwardRef<HTMLInputElement, FileInputProps>(function FileInput(props, ref) {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) props.onFileSelected(file);
+        e.target.value = '';
+    };
+
+    return (
+        <input
+            ref={ref}
+            type="file"
+            accept={props.accept}
+            style={{ display: 'none' }}
+            onChange={handleChange}
+        />
+    );
+});
 
 interface TextareaProps {
     label?: string;
@@ -68,7 +92,7 @@ interface SegmentedProps {
 }
 
 export function Segmented(props: SegmentedProps): JSX.Element {
-    const ref = useRef<HTMLElement>(null);
+    const ref = useRef<ESegmented>(null);
 
     useEffect(() => {
         const el = ref.current;
