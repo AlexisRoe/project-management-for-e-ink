@@ -1,17 +1,26 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useCallback } from 'react'
+
 import { db } from '../db/db'
 import type { ColumnStatus, ProjectItem } from '../db/types'
 
+/** Fields accepted when creating a new {@link ProjectItem}. */
 export interface CreateItemInput {
+  /** Short title of the item. */
   title: string
+  /** Longer free-text description of the item. Defaults to an empty string. */
   description?: string
+  /** Kanban column to place the item in. Defaults to `'todo'`. */
   column?: ColumnStatus
+  /** Optional planned/actual start date, as a Unix timestamp (ms). */
   startDate?: number
+  /** Optional planned/actual end date, as a Unix timestamp (ms). */
   endDate?: number
+  /** Vertical sort order within its column. Defaults to `0`. */
   position?: number
 }
 
+/** Fields accepted when patching an existing {@link ProjectItem}. Only provided keys are changed. */
 export type UpdateItemInput = Partial<
   Pick<ProjectItem, 'title' | 'description' | 'column' | 'startDate' | 'endDate' | 'position'>
 >

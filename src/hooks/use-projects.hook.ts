@@ -1,20 +1,32 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useCallback } from 'react'
+
 import { db } from '../db/db'
 import type { ColumnStatus, Project, ProjectItem } from '../db/types'
 
+/** Shape of the JSON produced by {@link useProjects}'s `exportData` and consumed by `importData`. */
 interface ExportedData {
+  /** All projects at the time of export. */
   projects: Project[]
+  /** All items at the time of export, across all projects. */
   items: ProjectItem[]
 }
 
+/** A project enriched with derived stats about its items, for display in list/overview views. */
 export interface ProjectSummary {
+  /** UUID v4, matching the source {@link Project.id}. */
   id: string
+  /** Display name of the project. */
   name: string
+  /** Unix timestamp (ms) when the project was created. */
   createdAt: number
+  /** Unix timestamp (ms) when the project was last updated. */
   updatedAt: number
+  /** Total number of items belonging to the project. */
   itemCount: number
+  /** Number of items in each Kanban column. */
   itemsByColumn: Record<ColumnStatus, number>
+  /** Percentage (0–100) of items in the `done` column. */
   completionPercentage: number
 }
 
