@@ -43,11 +43,13 @@ function ProjectCardUpdate({ eyebrow, initialValue = '', isVisible, onClose, onC
             data-type='new-card'
         >
             <div className='project-cards-content'>
-                <Input
-                    label="Project name"
-                    placeholder="Example"
-                    onDebouncedChange={setValue}
-                />
+                <div className='project-cards-body'>
+                    <Input
+                        label="Project name"
+                        placeholder="Example"
+                        onDebouncedChange={setValue}
+                    />
+                </div>
                 <div className='project-cards-actions'>
                     <CreateButton onClick={handleCreate} disabled={isCreateDisabled} />
                     <CancelButton onClick={onClose} />
@@ -107,7 +109,7 @@ function ProjectCard(props: ProjectCardProps): JSX.Element {
             eyebrow={`${total} ITEMS`}
         >
             <div className='project-cards-content'>
-                <div className='project-cars-progress'>
+                <div className='project-cars-progress project-cards-body'>
                     <ProgressBar value={doneInPercent} />
                     <ProgressBarLegend doneInPercent={doneInPercent} label='done' amounts={props.items} />
                 </div>

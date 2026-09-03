@@ -58,3 +58,7 @@ e-card.project-cards[data-type='new-card'] .ink-card {
   flex-direction: column;
   gap: 0.5rem;
 }
+
+.project-cards-body {
+  min-height: 4.5rem;
+}
