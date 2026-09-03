@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from "react";
 
 const DEFAULT_DELAY_IN_MS = 300;
 
@@ -8,7 +8,7 @@ export type UseDebouncedInputReturn = readonly [
   value: string,
   /** Updates the local value and restarts the debounce timer. */
   setValue: (value: string) => void,
-]
+];
 
 /**
  * Manages a piece of local input state that updates immediately for the UI,
@@ -49,7 +49,7 @@ export function useDebouncedInput(
     const timeoutId = setTimeout(() => onChangeRef.current(value), delayMs);
 
     return () => clearTimeout(timeoutId);
-  }, [value, delayMs])
+  }, [value, delayMs]);
 
-  return [value, setValue] as const
+  return [value, setValue] as const;
 }

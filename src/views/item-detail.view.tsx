@@ -1,17 +1,14 @@
-import { useState, type JSX } from 'react'
-import { useNavigate, useParams, useSearchParams } from 'react-router'
-
-import Page from '../components/page.component'
-import { Title, TitleLabel } from '../components/text.component'
-import { Button } from '../components/button.component'
-import { Icon } from '../components/icons.component'
-import { ItemForm, type ItemFormValue } from '../components/item-form.component'
-
-import LoadingView from './loading.view'
-import ErrorView from './error.view'
-
-import { useProject } from '../hooks/use-projects.hook'
-import { useCreateItem, useItem } from '../hooks/use-items.hook'
+import { type JSX, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router";
+import { Button } from "../components/button.component";
+import { Icon } from "../components/icons.component";
+import { ItemForm, type ItemFormValue } from "../components/item-form.component";
+import Page from "../components/page.component";
+import { Title, TitleLabel } from "../components/text.component";
+import { useCreateItem, useItem } from "../hooks/use-items.hook";
+import { useProject } from "../hooks/use-projects.hook";
+import ErrorView from "./error.view";
+import LoadingView from "./loading.view";
 
 /**
  * View for creating a new item or viewing and editing an existing one.
@@ -22,11 +19,16 @@ function ItemDetailView(): JSX.Element {
   const { itemId } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const isCreateMode = searchParams.get('create') === 'true';
-  const projectId = searchParams.get('projectId') ?? undefined;
+  const isCreateMode = searchParams.get("create") === "true";
+  const projectId = searchParams.get("projectId") ?? undefined;
 
   const { project, isLoading: isProjectLoading } = useProject(projectId);
-  const { item, isLoading: isItemLoading, updateItem, deleteItem } = useItem(isCreateMode ? undefined : itemId);
+  const {
+    item,
+    isLoading: isItemLoading,
+    updateItem,
+    deleteItem,
+  } = useItem(isCreateMode ? undefined : itemId);
   const { createItem } = useCreateItem(projectId);
   const [formValue, setFormValue] = useState<ItemFormValue | undefined>(undefined);
 
@@ -34,37 +36,37 @@ function ItemDetailView(): JSX.Element {
 
   const goBack = () => {
     navigate(`/planning?projectId=${projectId}`);
-  }
+  };
 
   const handleSave = async () => {
-    if (!formValue || formValue.title.trim().length === 0) return
+    if (!formValue || formValue.title.trim().length === 0) return;
 
     if (isCreateMode) {
-      await createItem(formValue)
+      await createItem(formValue);
     } else {
-      await updateItem(formValue)
+      await updateItem(formValue);
     }
 
     goBack();
-  }
+  };
 
   const handleDelete = async () => {
-    await deleteItem()
+    await deleteItem();
     goBack();
-  }
+  };
 
-  const title = isCreateMode ? 'New Item' : item?.title ?? 'Item';
-  const titleLabel = project?.name ?? 'LOCAL · NO ACCOUNT · NO NETWORK';
+  const title = isCreateMode ? "New Item" : (item?.title ?? "Item");
+  const titleLabel = project?.name ?? "LOCAL · NO ACCOUNT · NO NETWORK";
 
   if (isLoading) {
-    return <LoadingView title={title} titleLabel={titleLabel} />
+    return <LoadingView title={title} titleLabel={titleLabel} />;
   }
 
   if (project === undefined) {
-    return <ErrorView message='Project is not defined' />
+    return <ErrorView message="Project is not defined" />;
   }
 
-  const leftIcon = <Icon variant='chevL' size='16' onClick={goBack} />
+  const leftIcon = <Icon variant="chevL" size="16" onClick={goBack} />;
 
   return (
     <Page>
@@ -75,7 +77,7 @@ function ItemDetailView(): JSX.Element {
         </Page.Header.Left>
         <Page.Header.Right>
           <Button.Create
-            label='Save'
+            label="Save"
             onClick={handleSave}
             disabled={!formValue || formValue.title.trim().length === 0}
           />
@@ -85,7 +87,7 @@ function ItemDetailView(): JSX.Element {
       </Page.Header>
       <Page.Content>
         <ItemForm
-          key={item?.id ?? 'new'}
+          key={item?.id ?? "new"}
           initialTitle={item?.title}
           initialDescription={item?.description}
           initialColumn={item?.column}
@@ -93,7 +95,7 @@ function ItemDetailView(): JSX.Element {
         />
       </Page.Content>
     </Page>
-  )
+  );
 }
 
-export default ItemDetailView
+export default ItemDetailView;

@@ -1,12 +1,11 @@
-import type { JSX } from 'react'
-
-import Page from '../components/page.component'
-import { Title, TitleLabel } from '../components/text.component'
-import { EmptyState } from '../components/empty-state.component'
+import type { JSX } from "react";
+import { EmptyState } from "../components/empty-state.component";
+import Page from "../components/page.component";
+import { Title, TitleLabel } from "../components/text.component";
 
 interface ErrorViewProps {
   /** Error message shown to the user. */
-  message: string
+  message: string;
 }
 
 /**
@@ -26,7 +25,7 @@ function ErrorView({ message }: ErrorViewProps): JSX.Element {
         <EmptyState icon="moon" message={message} />
       </Page.Content>
     </Page>
-  )
+  );
 }
 
-export default ErrorView
+export default ErrorView;

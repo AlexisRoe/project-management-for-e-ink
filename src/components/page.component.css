@@ -27,11 +27,11 @@
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
-  align-items:flex-end;
+  align-items: flex-end;
 }
 
 .page-header::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   bottom: 0;

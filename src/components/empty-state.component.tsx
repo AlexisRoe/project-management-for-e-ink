@@ -1,17 +1,28 @@
-import type { JSX } from 'react';
+import type { JSX } from "react";
 
-import { Icon } from './icons.component';
+import { Icon } from "./icons.component";
 
-import './empty-state.component.css';
+import "./empty-state.component.css";
 
 /** Props for {@link EmptyState}. */
 interface EmptyStateProps {
-    /** Icon variant shown above the message. See {@link Icon}. */
-    icon: 'upload' | 'download' | 'plus' | 'close' | 'check' | 'trash' | 'edit' | 'eye' | 'search' | 'moon' | 'refresh';
-    /** Accessible label for the icon. Defaults to `'empty'`. */
-    label?: string;
-    /** Message shown below the icon. Defaults to `'Oops nothing here'`. */
-    message?: string;
+  /** Icon variant shown above the message. See {@link Icon}. */
+  icon:
+    | "upload"
+    | "download"
+    | "plus"
+    | "close"
+    | "check"
+    | "trash"
+    | "edit"
+    | "eye"
+    | "search"
+    | "moon"
+    | "refresh";
+  /** Accessible label for the icon. Defaults to `'empty'`. */
+  label?: string;
+  /** Message shown below the icon. Defaults to `'Oops nothing here'`. */
+  message?: string;
 }
 
 /**
@@ -23,10 +34,10 @@ interface EmptyStateProps {
  * ```
  */
 export function EmptyState(props: EmptyStateProps): JSX.Element {
-    return (
-        <div className='empty-state'>
-            <Icon variant={props.icon} label={props.label ?? 'empty'} size="40" />
-            <h1>{props.message ?? 'Oops nothing here'}</h1>
-        </div>
-    );
+  return (
+    <div className="empty-state">
+      <Icon variant={props.icon} label={props.label ?? "empty"} size="40" />
+      <h1>{props.message ?? "Oops nothing here"}</h1>
+    </div>
+  );
 }

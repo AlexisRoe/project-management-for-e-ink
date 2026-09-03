@@ -1,15 +1,14 @@
-import { useRef, useState, type JSX } from 'react'
-import { useNavigate } from 'react-router'
+import { type JSX, useRef, useState } from "react";
+import { useNavigate } from "react-router";
+import { Button } from "../components/button.component";
+import { EmptyState } from "../components/empty-state.component";
+import { Icon } from "../components/icons.component";
+import { FileInput } from "../components/input.component";
+import Page from "../components/page.component";
+import { ProjectCard, ProjectGrid } from "../components/projects.component";
+import { Title, TitleLabel } from "../components/text.component";
 
-import Page from '../components/page.component'
-import { Title, TitleLabel } from '../components/text.component'
-import { Button } from '../components/button.component'
-import { Icon } from '../components/icons.component'
-import { ProjectCard, ProjectGrid } from '../components/projects.component'
-import { EmptyState } from '../components/empty-state.component'
-import { FileInput } from '../components/input.component'
-
-import { useProjects } from '../hooks/use-projects.hook'
+import { useProjects } from "../hooks/use-projects.hook";
 
 /**
  * Landing view listing all projects as cards, with each card's progress
@@ -20,7 +19,8 @@ import { useProjects } from '../hooks/use-projects.hook'
 function ProjectOverviewView(): JSX.Element {
   const [isCreateInitialiazed, setIsCreateInitialiazed] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { projects, createProject, updateProject, deleteProject, exportData, importData } = useProjects();
+  const { projects, createProject, updateProject, deleteProject, exportData, importData } =
+    useProjects();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isEmpty = projects.length === 0 && !isCreateInitialiazed;
@@ -39,20 +39,17 @@ function ProjectOverviewView(): JSX.Element {
           <Button variant="secondary" onClick={() => fileInputRef.current?.click()}>
             <Icon variant="upload" label="upload data" />
           </Button>
-          <FileInput
-            ref={fileInputRef}
-            accept="application/json"
-            onFileSelected={importData}
-          />
+          <FileInput ref={fileInputRef} accept="application/json" onFileSelected={importData} />
           <Button onClick={() => setIsCreateInitialiazed(true)}>
             <Icon variant="plus" label="add project" />
           </Button>
         </Page.Header.Right>
       </Page.Header>
       <Page.Content>
-        {isEmpty
-          ? <EmptyState icon="search" />
-          : <ProjectGrid>
+        {isEmpty ? (
+          <EmptyState icon="search" />
+        ) : (
+          <ProjectGrid>
             <ProjectCard.Update
               isVisible={isCreateInitialiazed}
               onClose={() => setIsCreateInitialiazed(false)}
@@ -64,7 +61,7 @@ function ProjectOverviewView(): JSX.Element {
                 title={project.name}
                 items={{
                   todo: project.itemsByColumn.todo,
-                  inProgress: project.itemsByColumn['in-progress'],
+                  inProgress: project.itemsByColumn["in-progress"],
                   testing: project.itemsByColumn.testing,
                   done: project.itemsByColumn.done,
                 }}
@@ -76,10 +73,10 @@ function ProjectOverviewView(): JSX.Element {
               />
             ))}
           </ProjectGrid>
-        }
+        )}
       </Page.Content>
     </Page>
-  )
+  );
 }
 
-export default ProjectOverviewView
+export default ProjectOverviewView;

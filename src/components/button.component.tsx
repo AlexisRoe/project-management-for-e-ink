@@ -1,28 +1,28 @@
 import type { JSX, ReactElement } from "react";
 import { Icon } from "./icons.component";
 
-import './button.component.css';
+import "./button.component.css";
 
 /** Props shared by every icon/action button variant attached to {@link Button}. */
 interface BaseButtonProps {
-    /** Called when the button is clicked. */
-    onClick: () => void;
+  /** Called when the button is clicked. */
+  onClick: () => void;
 }
 
 /** Props for {@link Button}. */
 interface ButtonProps {
-    /** Button content — usually text and/or an {@link Icon}. */
-    children: ReactElement | string;
-    /** Visual style. Defaults to `'primary'`. */
-    variant?: 'primary' | 'secondary';
-    /** Button size. Defaults to `'default'`. */
-    size?: 'default' | 'small';
-    /** Called when the button is clicked. */
-    onClick?: () => void;
-    /** Disables the button when `true`. Defaults to `false`. */
-    disabled?: boolean;
-    /** Extra class name(s) applied to the underlying `<e-button>`. */
-    className?: string;
+  /** Button content — usually text and/or an {@link Icon}. */
+  children: ReactElement | string;
+  /** Visual style. Defaults to `'primary'`. */
+  variant?: "primary" | "secondary";
+  /** Button size. Defaults to `'default'`. */
+  size?: "default" | "small";
+  /** Called when the button is clicked. */
+  onClick?: () => void;
+  /** Disables the button when `true`. Defaults to `false`. */
+  disabled?: boolean;
+  /** Extra class name(s) applied to the underlying `<e-button>`. */
+  className?: string;
 }
 
 /**
@@ -42,22 +42,31 @@ interface ButtonProps {
  * <Button.Create onClick={handleCreate} disabled={isCreateDisabled} />
  * ```
  */
-export function Button({ className, variant = 'primary', size = 'default', children, onClick, disabled = false }: ButtonProps): JSX.Element {
-    const combinedClassName = [className, size === 'small' ? 'button-small' : undefined].filter(Boolean).join(' ') || undefined;
+export function Button({
+  className,
+  variant = "primary",
+  size = "default",
+  children,
+  onClick,
+  disabled = false,
+}: ButtonProps): JSX.Element {
+  const combinedClassName =
+    [className, size === "small" ? "button-small" : undefined].filter(Boolean).join(" ") ||
+    undefined;
 
-    return (
-        <e-button className={combinedClassName} variant={variant} onClick={onClick} disabled={disabled}>
-            {children}
-        </e-button>
-    );
+  return (
+    <e-button className={combinedClassName} variant={variant} onClick={onClick} disabled={disabled}>
+      {children}
+    </e-button>
+  );
 }
 
 /** Props for {@link Button.Cancel}. */
 interface CancelButtonProps extends BaseButtonProps {
-    /** Button size. Defaults to `'default'`. */
-    size?: 'default' | 'small';
-    /** Extra class name(s) applied to the underlying button. */
-    className?: string;
+  /** Button size. Defaults to `'default'`. */
+  size?: "default" | "small";
+  /** Extra class name(s) applied to the underlying button. */
+  className?: string;
 }
 
 /**
@@ -68,18 +77,20 @@ interface CancelButtonProps extends BaseButtonProps {
  * <Button.Cancel onClick={onClose} />
  * ```
  */
-function CancelButton({ onClick, size = 'default', className }: CancelButtonProps): JSX.Element {
-    return <Button variant="secondary" size={size} className={className} onClick={onClick}>
-        <Icon variant='close' label="close" size={size === 'small' ? '16' : '24'} />
+function CancelButton({ onClick, size = "default", className }: CancelButtonProps): JSX.Element {
+  return (
+    <Button variant="secondary" size={size} className={className} onClick={onClick}>
+      <Icon variant="close" label="close" size={size === "small" ? "16" : "24"} />
     </Button>
+  );
 }
 
 /** Props for {@link Button.Create}. */
 interface CreateButtonProps extends BaseButtonProps {
-    /** Disables the button when `true`. Defaults to `false`. */
-    disabled?: boolean;
-    /** Label text shown next to the check icon. Defaults to `'Create'`. */
-    label?: string;
+  /** Disables the button when `true`. Defaults to `false`. */
+  disabled?: boolean;
+  /** Label text shown next to the check icon. Defaults to `'Create'`. */
+  label?: string;
 }
 
 /**
@@ -90,17 +101,25 @@ interface CreateButtonProps extends BaseButtonProps {
  * <Button.Create onClick={handleCreate} disabled={isCreateDisabled} />
  * ```
  */
-function CreateButton({ onClick, disabled = false, label = 'Create' }: CreateButtonProps): JSX.Element {
-    return <Button className={disabled ? 'create-button-disabled' : undefined} onClick={onClick} disabled={disabled}>
-        <>
-            <Icon variant='check' label="Create" />
-            <span>{` ${label}`}</span>
-        </>
+function CreateButton({
+  onClick,
+  disabled = false,
+  label = "Create",
+}: CreateButtonProps): JSX.Element {
+  return (
+    <Button
+      className={disabled ? "create-button-disabled" : undefined}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      <Icon variant="check" label="Create" />
+      <span>{` ${label}`}</span>
     </Button>
+  );
 }
 
 /** Props for {@link Button.Delete}. */
-interface DeleteButtonProps extends BaseButtonProps { }
+interface DeleteButtonProps extends BaseButtonProps {}
 
 /**
  * Secondary button rendering a trash icon, used to delete an item.
@@ -111,13 +130,15 @@ interface DeleteButtonProps extends BaseButtonProps { }
  * ```
  */
 function DeleteButton({ onClick }: DeleteButtonProps): JSX.Element {
-    return <Button variant="secondary" onClick={onClick}>
-        <Icon variant='trash' label="delete" />
+  return (
+    <Button variant="secondary" onClick={onClick}>
+      <Icon variant="trash" label="delete" />
     </Button>
+  );
 }
 
 /** Props for {@link Button.Edit}. */
-interface EditButtonProps extends BaseButtonProps { }
+interface EditButtonProps extends BaseButtonProps {}
 
 /**
  * Secondary button rendering an edit icon, used to enter edit mode.
@@ -128,13 +149,15 @@ interface EditButtonProps extends BaseButtonProps { }
  * ```
  */
 function EditButton({ onClick }: EditButtonProps): JSX.Element {
-    return <Button variant="secondary" onClick={onClick}>
-        <Icon variant='edit' label="update or create" />
+  return (
+    <Button variant="secondary" onClick={onClick}>
+      <Icon variant="edit" label="update or create" />
     </Button>
+  );
 }
 
 /** Props for {@link Button.Open}. */
-interface OpenButtonProps extends BaseButtonProps { }
+interface OpenButtonProps extends BaseButtonProps {}
 
 /**
  * Primary button rendering an eye icon and "Open" label, used to open an item.
@@ -145,16 +168,16 @@ interface OpenButtonProps extends BaseButtonProps { }
  * ```
  */
 function OpenButton({ onClick }: OpenButtonProps): JSX.Element {
-    return <Button variant="primary" onClick={onClick}>
-        <>
-            <Icon variant='eye' label="Open" />
-            <span> Open</span>
-        </>
+  return (
+    <Button variant="primary" onClick={onClick}>
+      <Icon variant="eye" label="Open" />
+      <span> Open</span>
     </Button>
+  );
 }
 
 /** Props for {@link Button.Add}. */
-interface AddButtonProps extends BaseButtonProps { }
+interface AddButtonProps extends BaseButtonProps {}
 
 /**
  * Primary button rendering a plus icon, used to add a new item.
@@ -165,15 +188,17 @@ interface AddButtonProps extends BaseButtonProps { }
  * ```
  */
 function AddButton({ onClick }: AddButtonProps): JSX.Element {
-    return <Button variant="primary" onClick={onClick}>
-        <Icon variant='plus' label="update or create" />
+  return (
+    <Button variant="primary" onClick={onClick}>
+      <Icon variant="plus" label="update or create" />
     </Button>
+  );
 }
 
 /** Props for {@link Button.Move}. */
 interface MoveButtonProps extends BaseButtonProps {
-    /** Whether the item is currently being moved. Renders the primary variant when `true`. Defaults to `false`. */
-    isActive?: boolean;
+  /** Whether the item is currently being moved. Renders the primary variant when `true`. Defaults to `false`. */
+  isActive?: boolean;
 }
 
 /**
@@ -186,13 +211,15 @@ interface MoveButtonProps extends BaseButtonProps {
  * ```
  */
 function MoveButton({ onClick, isActive = false }: MoveButtonProps): JSX.Element {
-    return <Button variant={isActive ? 'primary' : 'secondary'} onClick={onClick}>
-        <Icon variant='arrowR' label="move" />
+  return (
+    <Button variant={isActive ? "primary" : "secondary"} onClick={onClick}>
+      <Icon variant="arrowR" label="move" />
     </Button>
+  );
 }
 
 /** Props for {@link Button.Detail}. */
-interface DetailButtonProps extends BaseButtonProps { }
+interface DetailButtonProps extends BaseButtonProps {}
 
 /**
  * Primary button rendering a pen icon, used to open an item's detail view.
@@ -203,13 +230,15 @@ interface DetailButtonProps extends BaseButtonProps { }
  * ```
  */
 function DetailButton({ onClick }: DetailButtonProps): JSX.Element {
-    return <Button variant="primary" onClick={onClick}>
-        <Icon variant='pen' label="open item" />
+  return (
+    <Button variant="primary" onClick={onClick}>
+      <Icon variant="pen" label="open item" />
     </Button>
+  );
 }
 
 /** Props for {@link Button.Back}. */
-interface BackButtonProps extends BaseButtonProps { }
+interface BackButtonProps extends BaseButtonProps {}
 
 /**
  * Secondary text button labeled "Back", used for backwards navigation.
@@ -220,7 +249,11 @@ interface BackButtonProps extends BaseButtonProps { }
  * ```
  */
 function BackButton({ onClick }: BackButtonProps): JSX.Element {
-    return <Button className='button-basic-reset' variant="secondary" onClick={onClick}>Back</Button>
+  return (
+    <Button className="button-basic-reset" variant="secondary" onClick={onClick}>
+      Back
+    </Button>
+  );
 }
 
 Button.Cancel = CancelButton;

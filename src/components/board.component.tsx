@@ -1,28 +1,27 @@
-import type { JSX, ReactNode } from 'react'
+import type { JSX, ReactNode } from "react";
+import type { ColumnStatus, ProjectItem } from "../db/types";
+import { Button } from "./button.component";
+import { Mono } from "./text.component";
 
-import { Mono } from './text.component'
-import { Button } from './button.component'
-import type { ColumnStatus, ProjectItem } from '../db/types'
-
-import './board.component.css'
+import "./board.component.css";
 
 const COLUMNS: { status: ColumnStatus; label: string }[] = [
-  { status: 'todo', label: 'To do' },
-  { status: 'in-progress', label: 'In progress' },
-  { status: 'testing', label: 'Testing' },
-  { status: 'done', label: 'Done' },
-]
+  { status: "todo", label: "To do" },
+  { status: "in-progress", label: "In progress" },
+  { status: "testing", label: "Testing" },
+  { status: "done", label: "Done" },
+];
 
 /** Props for {@link Board}. */
 interface BoardProps {
   /** Items to distribute across the board's columns, keyed by {@link ProjectItem.column}. */
-  items: ProjectItem[]
+  items: ProjectItem[];
   /** Renders a single item's card content. */
-  renderItem: (item: ProjectItem) => ReactNode
+  renderItem: (item: ProjectItem) => ReactNode;
   /** ID of the item currently being moved, if any. Enables "MOVE HERE" buttons on other columns. */
-  movingItemId?: string
+  movingItemId?: string;
   /** Called with the target column when a "MOVE HERE" button is clicked. */
-  onMoveTo?: (column: ColumnStatus) => void
+  onMoveTo?: (column: ColumnStatus) => void;
 }
 
 /**
@@ -44,33 +43,31 @@ interface BoardProps {
  * ```
  */
 export function Board({ items, renderItem, movingItemId, onMoveTo }: BoardProps): JSX.Element {
-  const movingItemColumn = items.find((item) => item.id === movingItemId)?.column
+  const movingItemColumn = items.find((item) => item.id === movingItemId)?.column;
 
   return (
     <div className="board">
       {COLUMNS.map(({ status, label }) => {
-        const columnItems = items.filter((item) => item.column === status)
-        const showMoveHere = movingItemId !== undefined && status !== movingItemColumn
+        const columnItems = items.filter((item) => item.column === status);
+        const showMoveHere = movingItemId !== undefined && status !== movingItemColumn;
 
         return (
           <div className="board-column" key={status}>
             <div className="board-column-header">
               <Mono>{label.toUpperCase()}</Mono>
-              <Mono>{String(columnItems.length).padStart(2, '0')}</Mono>
+              <Mono>{String(columnItems.length).padStart(2, "0")}</Mono>
             </div>
             {showMoveHere && (
               <button type="button" className="board-move-here" onClick={() => onMoveTo?.(status)}>
-                <Mono>{'↓ MOVE HERE'}</Mono>
+                <Mono>{"↓ MOVE HERE"}</Mono>
               </button>
             )}
-            <div className="board-column-body">
-              {columnItems.map((item) => renderItem(item))}
-            </div>
+            <div className="board-column-body">{columnItems.map((item) => renderItem(item))}</div>
           </div>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
 
 /** Props for {@link MoveBanner}. */
@@ -97,9 +94,9 @@ export function MoveBanner({ title, onCancel }: MoveBannerProps): JSX.Element {
       <div className="move-banner-text">
         <Mono>MOVING</Mono>
         <strong>{title}</strong>
-        <Mono>{'CHOOSE A COLUMN ↓'}</Mono>
+        <Mono>{"CHOOSE A COLUMN ↓"}</Mono>
       </div>
       <Button.Cancel size="small" className="move-banner-close" onClick={onCancel} />
     </div>
-  )
+  );
 }

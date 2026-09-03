@@ -1,14 +1,13 @@
-import type { JSX } from 'react'
-
-import Page from '../components/page.component'
-import { Title, TitleLabel } from '../components/text.component'
-import { EmptyState } from '../components/empty-state.component'
+import type { JSX } from "react";
+import { EmptyState } from "../components/empty-state.component";
+import Page from "../components/page.component";
+import { Title, TitleLabel } from "../components/text.component";
 
 interface LoadingViewProps {
   /** Label shown above the title, e.g. the project or workspace name. */
-  titleLabel: string
+  titleLabel: string;
   /** Title of the view being loaded. */
-  title: string
+  title: string;
 }
 
 /**
@@ -28,7 +27,7 @@ function LoadingView({ titleLabel, title }: LoadingViewProps): JSX.Element {
         <EmptyState icon="refresh" message="… LOADING …" />
       </Page.Content>
     </Page>
-  )
+  );
 }
 
-export default LoadingView
+export default LoadingView;

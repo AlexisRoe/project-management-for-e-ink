@@ -1,11 +1,11 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from "react";
 
-import './page.component.css'
+import "./page.component.css";
 
 /** Props for {@link Page}. */
 interface PageProps {
   /** Page content, typically a `Page.Header` and `Page.Content`. */
-  children: ReactNode
+  children: ReactNode;
 }
 
 /**
@@ -19,13 +19,13 @@ interface PageProps {
  * </Page>
  */
 function Page({ children }: PageProps) {
-  return <div className="page">{children}</div>
+  return <div className="page">{children}</div>;
 }
 
 /** Props for {@link Page.Header}. */
 interface PageHeaderProps {
   /** Header content, typically `Page.Header.Left` and/or `Page.Header.Right`. */
-  children: ReactNode
+  children: ReactNode;
 }
 
 /**
@@ -35,13 +35,13 @@ interface PageHeaderProps {
  * <Page.Header><h1>Planning</h1></Page.Header>
  */
 function PageHeader({ children }: PageHeaderProps) {
-  return <header className="page-header">{children}</header>
+  return <header className="page-header">{children}</header>;
 }
 
 /** Props for {@link Page.Header.Left}. */
 interface PageHeaderLeftProps {
   /** Left-aligned header content. */
-  children: ReactNode
+  children: ReactNode;
 }
 
 /**
@@ -54,13 +54,13 @@ interface PageHeaderLeftProps {
  * </Page.Header>
  */
 function PageHeaderLeft({ children }: PageHeaderLeftProps) {
-  return <div className="page-header-left">{children}</div>
+  return <div className="page-header-left">{children}</div>;
 }
 
 /** Props for {@link Page.Header.Right}. */
 interface PageHeaderRightProps {
   /** Right-aligned header content. */
-  children: ReactNode
+  children: ReactNode;
 }
 
 /**
@@ -74,16 +74,16 @@ interface PageHeaderRightProps {
  * </Page.Header>
  */
 function PageHeaderRight({ children }: PageHeaderRightProps) {
-  return <div className="page-header-right">{children}</div>
+  return <div className="page-header-right">{children}</div>;
 }
 
-PageHeader.Left = PageHeaderLeft
-PageHeader.Right = PageHeaderRight
+PageHeader.Left = PageHeaderLeft;
+PageHeader.Right = PageHeaderRight;
 
 /** Props for {@link Page.Content}. */
 interface PageContentProps {
   /** Main body content. */
-  children: ReactNode
+  children: ReactNode;
 }
 
 /**
@@ -93,10 +93,10 @@ interface PageContentProps {
  * <Page.Content><p>Details for this item go here.</p></Page.Content>
  */
 function PageContent({ children }: PageContentProps) {
-  return <div className="page-content">{children}</div>
+  return <div className="page-content">{children}</div>;
 }
 
-Page.Header = PageHeader
-Page.Content = PageContent
+Page.Header = PageHeader;
+Page.Content = PageContent;
 
-export default Page
+export default Page;

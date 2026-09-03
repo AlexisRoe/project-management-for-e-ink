@@ -1,26 +1,26 @@
-import { forwardRef, useEffect, useRef, type JSX } from 'react';
-import type { ESegmented } from '@marcomattes/epaper-components';
+import type { ESegmented } from "@marcomattes/epaper-components";
+import { forwardRef, type JSX, useEffect, useRef } from "react";
 
-import { useDebouncedInput } from '../hooks/use-debounced.hook';
+import { useDebouncedInput } from "../hooks/use-debounced.hook";
 
-import './input.component.css';
+import "./input.component.css";
 
 /** Props for {@link Input}. */
 interface InputProps {
-    /** Field label. */
-    label?: string;
-    /** Placeholder text shown when the field is empty. */
-    placeholder?: string;
-    /** Helper text shown below the field. */
-    hint?: string;
-    /** Error state. A string is shown as an error message; `true` marks the field as invalid without a message. */
-    error?: boolean | string;
-    /** Initial field value. */
-    initialValue?: string;
-    /** Called with the current value after typing settles for `debounceMs`. */
-    onDebouncedChange: (value: string) => void;
-    /** Debounce delay in milliseconds. Defaults to `300`. */
-    debounceMs?: number;
+  /** Field label. */
+  label?: string;
+  /** Placeholder text shown when the field is empty. */
+  placeholder?: string;
+  /** Helper text shown below the field. */
+  hint?: string;
+  /** Error state. A string is shown as an error message; `true` marks the field as invalid without a message. */
+  error?: boolean | string;
+  /** Initial field value. */
+  initialValue?: string;
+  /** Called with the current value after typing settles for `debounceMs`. */
+  onDebouncedChange: (value: string) => void;
+  /** Debounce delay in milliseconds. Defaults to `300`. */
+  debounceMs?: number;
 }
 
 /**
@@ -33,27 +33,31 @@ interface InputProps {
  * ```
  */
 export function Input(props: InputProps): JSX.Element {
-    const [value, setValue] = useDebouncedInput(props.initialValue ?? '', props.onDebouncedChange, props.debounceMs ?? 300);
+  const [value, setValue] = useDebouncedInput(
+    props.initialValue ?? "",
+    props.onDebouncedChange,
+    props.debounceMs ?? 300,
+  );
 
-    return (
-        <e-input
-            label={props.label}
-            placeholder={props.placeholder}
-            hint={props.hint ?? ''}
-            default-value={value}
-            type="text"
-            error={props.error ?? ''}
-            onInput={(e) => setValue(e.currentTarget.value)}
-        ></e-input>
-    );
+  return (
+    <e-input
+      label={props.label}
+      placeholder={props.placeholder}
+      hint={props.hint ?? ""}
+      default-value={value}
+      type="text"
+      error={props.error ?? ""}
+      onInput={(e) => setValue(e.currentTarget.value)}
+    ></e-input>
+  );
 }
 
 /** Props for {@link FileInput}. */
 interface FileInputProps {
-    /** MIME type(s) or file extension(s) accepted, forwarded to the native `accept` attribute. */
-    accept?: string;
-    /** Called with the selected file. The input is reset immediately after, so it can be re-triggered for the same file. */
-    onFileSelected: (file: File) => void;
+  /** MIME type(s) or file extension(s) accepted, forwarded to the native `accept` attribute. */
+  accept?: string;
+  /** Called with the selected file. The input is reset immediately after, so it can be re-triggered for the same file. */
+  onFileSelected: (file: File) => void;
 }
 
 /**
@@ -67,38 +71,40 @@ interface FileInputProps {
  * <button onClick={() => fileInputRef.current?.click()}>Import</button>
  * ```
  */
-export const FileInput = forwardRef<HTMLInputElement, FileInputProps>(function FileInput(props, ref) {
+export const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
+  function FileInput(props, ref) {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) props.onFileSelected(file);
-        e.target.value = '';
+      const file = e.target.files?.[0];
+      if (file) props.onFileSelected(file);
+      e.target.value = "";
     };
 
     return (
-        <input
-            ref={ref}
-            type="file"
-            accept={props.accept}
-            style={{ display: 'none' }}
-            onChange={handleChange}
-        />
+      <input
+        ref={ref}
+        type="file"
+        accept={props.accept}
+        style={{ display: "none" }}
+        onChange={handleChange}
+      />
     );
-});
+  },
+);
 
 /** Props for {@link Textarea}. */
 interface TextareaProps {
-    /** Field label. */
-    label?: string;
-    /** Placeholder text shown when the field is empty. */
-    placeholder?: string;
-    /** Error state. A string is shown as an error message; `true` marks the field as invalid without a message. */
-    error?: boolean | string;
-    /** Initial field value. */
-    initialValue?: string;
-    /** Called with the current value after typing settles for `debounceMs`. */
-    onDebouncedChange: (value: string) => void;
-    /** Debounce delay in milliseconds. Defaults to `300`. */
-    debounceMs?: number;
+  /** Field label. */
+  label?: string;
+  /** Placeholder text shown when the field is empty. */
+  placeholder?: string;
+  /** Error state. A string is shown as an error message; `true` marks the field as invalid without a message. */
+  error?: boolean | string;
+  /** Initial field value. */
+  initialValue?: string;
+  /** Called with the current value after typing settles for `debounceMs`. */
+  onDebouncedChange: (value: string) => void;
+  /** Debounce delay in milliseconds. Defaults to `300`. */
+  debounceMs?: number;
 }
 
 /**
@@ -111,39 +117,47 @@ interface TextareaProps {
  * ```
  */
 export function Textarea(props: TextareaProps): JSX.Element {
-    const [value, setValue] = useDebouncedInput(props.initialValue ?? '', props.onDebouncedChange, props.debounceMs ?? 300);
+  const [value, setValue] = useDebouncedInput(
+    props.initialValue ?? "",
+    props.onDebouncedChange,
+    props.debounceMs ?? 300,
+  );
 
-    return (
-        <div className="field-group">
-            {props.label && <e-text className="field-label" kind="label" as="span">{props.label}</e-text>}
-            <e-textarea
-                placeholder={props.placeholder}
-                value={value}
-                error={props.error ?? ''}
-                onInput={(e) => setValue(e.currentTarget.value)}
-            ></e-textarea>
-        </div>
-    );
+  return (
+    <div className="field-group">
+      {props.label && (
+        <e-text className="field-label" kind="label" as="span">
+          {props.label}
+        </e-text>
+      )}
+      <e-textarea
+        placeholder={props.placeholder}
+        value={value}
+        error={props.error ?? ""}
+        onInput={(e) => setValue(e.currentTarget.value)}
+      ></e-textarea>
+    </div>
+  );
 }
 
 /** A single selectable option in a {@link Segmented} control. */
 interface SegmentedOption {
-    /** Underlying value reported to `onChange`. */
-    value: string;
-    /** Text shown for this option. */
-    label: string;
+  /** Underlying value reported to `onChange`. */
+  value: string;
+  /** Text shown for this option. */
+  label: string;
 }
 
 /** Props for {@link Segmented}. */
 interface SegmentedProps {
-    /** Field label. */
-    label?: string;
-    /** Options to render. */
-    options: SegmentedOption[];
-    /** Currently selected option value. */
-    value: string;
-    /** Called with the newly selected option value. */
-    onChange: (value: string) => void;
+  /** Field label. */
+  label?: string;
+  /** Options to render. */
+  options: SegmentedOption[];
+  /** Currently selected option value. */
+  value: string;
+  /** Called with the newly selected option value. */
+  onChange: (value: string) => void;
 }
 
 /**
@@ -161,29 +175,33 @@ interface SegmentedProps {
  * ```
  */
 export function Segmented(props: SegmentedProps): JSX.Element {
-    const ref = useRef<ESegmented>(null);
+  const ref = useRef<ESegmented>(null);
 
-    useEffect(() => {
-        const el = ref.current;
-        if (!el) return;
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
 
-        const handleChange = (event: Event) => {
-            const detail = (event as CustomEvent<{ value: string }>).detail;
-            props.onChange(detail.value);
-        };
+    const handleChange = (event: Event) => {
+      const detail = (event as CustomEvent<{ value: string }>).detail;
+      props.onChange(detail.value);
+    };
 
-        el.addEventListener('e-change', handleChange);
-        return () => el.removeEventListener('e-change', handleChange);
-    }, [props.onChange]);
+    el.addEventListener("e-change", handleChange);
+    return () => el.removeEventListener("e-change", handleChange);
+  }, [props.onChange]);
 
-    return (
-        <div className="field-group">
-            {props.label && <e-text className="field-label" kind="label" as="span">{props.label}</e-text>}
-            <e-segmented ref={ref} value={props.value}>
-                {props.options.map((option) => (
-                    <e-segment key={option.value} value={option.value} label={option.label}></e-segment>
-                ))}
-            </e-segmented>
-        </div>
-    );
+  return (
+    <div className="field-group">
+      {props.label && (
+        <e-text className="field-label" kind="label" as="span">
+          {props.label}
+        </e-text>
+      )}
+      <e-segmented ref={ref} value={props.value}>
+        {props.options.map((option) => (
+          <e-segment key={option.value} value={option.value} label={option.label}></e-segment>
+        ))}
+      </e-segmented>
+    </div>
+  );
 }

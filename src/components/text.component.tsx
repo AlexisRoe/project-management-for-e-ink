@@ -1,12 +1,12 @@
 import type { JSX, ReactElement } from "react";
 
-import './text.component.css';
+import "./text.component.css";
 
 interface TitleProps {
-    /** Title label displayed to users */
-    children: ReactElement | string;
-    /** Defines the header size */
-    size?: '1' | '2' | '3' | '4' | '5' | '6'
+  /** Title label displayed to users */
+  children: ReactElement | string;
+  /** Defines the header size */
+  size?: "1" | "2" | "3" | "4" | "5" | "6";
 }
 
 /**
@@ -18,16 +18,16 @@ interface TitleProps {
  * ```
  */
 export function Title(props: TitleProps): JSX.Element {
-    const size = props.size ?? '1';
+  const size = props.size ?? "1";
 
-    return <e-title level={size}>{props.children}</e-title>
+  return <e-title level={size}>{props.children}</e-title>;
 }
 
 interface TitleLabelProps {
-    /** Label all in uppercase and styling */
-    children: string;
-    /** Icon on the left */
-    iconLeft?: ReactElement
+  /** Label all in uppercase and styling */
+  children: string;
+  /** Icon on the left */
+  iconLeft?: ReactElement;
 }
 
 /**
@@ -39,25 +39,28 @@ interface TitleLabelProps {
  * ```
  */
 export function TitleLabel(props: TitleLabelProps): JSX.Element {
+  if (props.iconLeft) {
+    return (
+      <div className="title-label-container">
+        {props.iconLeft}
+        <e-text kind="label" as="span">
+          {props.children.toUpperCase()}
+        </e-text>
+      </div>
+    );
+  }
 
-    if (props.iconLeft) {
-        return <div className="title-label-container">
-            {props.iconLeft}
-            <e-text kind="label" as="span">
-                {props.children.toUpperCase()}
-            </e-text>
-        </div>
-    }
-
-    return <e-text kind="label" as="span">
-        {props.children.toUpperCase()}
+  return (
+    <e-text kind="label" as="span">
+      {props.children.toUpperCase()}
     </e-text>
+  );
 }
 
 /** Props for {@link Mono}. */
 interface MonoProps {
-    /** Text content, rendered in a monospace font. */
-    children: string;
+  /** Text content, rendered in a monospace font. */
+  children: string;
 }
 
 /**
@@ -69,5 +72,9 @@ interface MonoProps {
  * ```
  */
 export function Mono({ children }: MonoProps): JSX.Element {
-    return <e-text kind="mono" as="span">{children}</e-text>
+  return (
+    <e-text kind="mono" as="span">
+      {children}
+    </e-text>
+  );
 }
