@@ -3,7 +3,7 @@ import type { JSX } from "react";
 interface IconProps {
     label: string;
     size?: '24';
-    variant: 'upload' | 'download' | 'plus' | 'close' | 'check';
+    variant: 'upload' | 'download' | 'plus' | 'close' | 'check' | 'trash' | 'edit' | 'eye';
 }
 
 export function Icon({ size = '24', variant, label }: IconProps): JSX.Element {

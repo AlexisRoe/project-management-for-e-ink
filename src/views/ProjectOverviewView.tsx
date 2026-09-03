@@ -5,6 +5,19 @@ import { Icon } from '../components/Icons.component'
 import { ProjectCard, ProjectGrid } from '../components/Projects.component'
 import { useState } from 'react'
 
+const MockItem = {
+  todo: 2,
+  inProgress: 5,
+  testing: 0,
+  done: 3,
+}
+
+const MockActions = {
+  update: () => console.log(''),
+  delete: () => console.log(''),
+  open: () => console.log(''),
+}
+
 function ProjectOverviewView() {
   const [isCreateInitialiazed, setIsCreateInitialiazed] = useState<boolean>(false);
 
@@ -34,7 +47,7 @@ function ProjectOverviewView() {
             onClose={() => setIsCreateInitialiazed(false)}
             onCreate={() => console.log('')}
           />
-          <ProjectCard title='test' amountCompleted={2} amountTotal={3} />
+          <ProjectCard title='test' items={MockItem} actions={MockActions} />
         </ProjectGrid>
       </Page.Content>
     </Page>

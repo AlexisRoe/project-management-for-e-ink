@@ -1,9 +1,10 @@
 import { useState, type JSX, type ReactElement } from 'react';
 
-import './Projects.components.css';
-import { Button, CancelButton, CreateButton } from './Button.component';
+import { CancelButton, CreateButton, DeleteButton, EditButton, OpenButton } from './Button.component';
 import { Input } from './Input.component';
-import { ProgressBar } from './Progress.component';
+import { ProgressBar, ProgressBarLegend } from './Progress.component';
+
+import './Projects.component.css';
 
 interface ProjectGridProps {
     children: ReactElement | ReactElement[];
@@ -17,10 +18,12 @@ interface ProjectCardUpdateProps {
     isVisible: boolean;
     onClose: () => void;
     onCreate: (label: string) => void;
+    title?: string
+    initialValue?: string;
 }
 
-function ProjectCardUpdate({ isVisible, onClose, onCreate }: ProjectCardUpdateProps): JSX.Element {
-    const [value, setValue] = useState<string>('');
+function ProjectCardUpdate({ initialValue = '', isVisible, onClose, onCreate, title = 'New Project' }: ProjectCardUpdateProps): JSX.Element {
+    const [value, setValue] = useState<string>(initialValue);
 
     if (isVisible === false) return <></>;
 
@@ -34,16 +37,16 @@ function ProjectCardUpdate({ isVisible, onClose, onCreate }: ProjectCardUpdatePr
     return (
         <e-card
             className='project-cards'
-            title="New Project"
+            title={title}
             data-type='new-card'
         >
-            <div className='project-cards-new-content'>
+            <div className='project-cards-content'>
                 <Input
                     label="Project name"
                     placeholder="Example"
                     onDebouncedChange={setValue}
                 />
-                <div className='project-cards-new-content-actions'>
+                <div className='project-cards-actions'>
                     <CreateButton onClick={handleCreate} disabled={isCreateDisabled} />
                     <CancelButton onClick={onClose} />
                 </div>
@@ -59,25 +62,46 @@ interface Items {
     done: number
 }
 
+interface ItemActions {
+    update: () => void;
+    delete: () => void;
+    open: () => void;
+}
+
 interface ProjectCardProps {
-    amountCompleted: number;
-    amountTotal: number;
-    // items: Items;
-    // doneInPercent: number;
-    // open: () => void;
-    // delete: () => void;
-    // update: () => void;
     title: string;
+    items: Items;
+    actions: ItemActions
+}
+
+function sum(input: number[]): number {
+    return input.reduce((prev, cur) => prev + cur, 0);
 }
 
 function ProjectCard(props: ProjectCardProps): JSX.Element {
+    const total = sum(Object.values(props.items));
+    const done = props.items.done;
+    const doneInPercent = total === 0 ? 0 : (done * 100) / total;
+
     return (
         <e-card
             className='project-cards'
             title={props.title}
-            eyebrow={`${props.amountCompleted} ITEMS`}
+            eyebrow={`${total} ITEMS`}
         >
-            <ProgressBar value={30} />
+            <div className='project-cards-content'>
+                <div className='project-cars-progress'>
+                    <ProgressBar value={doneInPercent} />
+                    <ProgressBarLegend doneInPercent={doneInPercent} label='done' amounts={props.items} />
+                </div>
+                <div className='project-cards-actions'>
+                    <div className='project-cards-actions-left'>
+                        <OpenButton onClick={props.actions.open} />
+                        <EditButton onClick={() => console.log('')} />
+                    </div>
+                    <DeleteButton onClick={props.actions.delete} />
+                </div>
+            </div>
         </e-card>
     );
 }

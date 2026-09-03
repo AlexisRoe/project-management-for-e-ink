@@ -42,3 +42,36 @@ export function CreateButton({ onClick, disabled }: CreateButtonProps): JSX.Elem
         </>
     </Button>
 }
+
+interface DeleteButtonProps {
+    onClick: () => void;
+}
+
+export function DeleteButton({ onClick }: DeleteButtonProps): JSX.Element {
+    return <Button variant="secondary" onClick={onClick}>
+        <Icon variant='trash' label="delete" />
+    </Button>
+}
+
+interface EditButtonProps {
+    onClick: () => void;
+}
+
+export function EditButton({ onClick }: EditButtonProps): JSX.Element {
+    return <Button variant="secondary" onClick={onClick}>
+        <Icon variant='edit' label="update or create" />
+    </Button>
+}
+
+interface OpenButtonProps {
+    onClick: () => void;
+}
+
+export function OpenButton({ onClick }: OpenButtonProps): JSX.Element {
+    return <Button variant="primary" onClick={onClick}>
+        <>
+            <Icon variant='eye' label="Open" />
+            <span> Open</span>
+        </>
+    </Button>
+}
