@@ -1,3 +1,4 @@
+import 'fake-indexeddb/auto'
 import '@testing-library/jest-dom/vitest'
 
 // jsdom's ElementInternals is missing the form-association APIs

@@ -25,6 +25,38 @@ const emptyColumnCounts = (): Record<ColumnStatus, number> => ({
   done: 0,
 })
 
+/**
+ * Live list of all projects, each enriched with item counts and completion
+ * stats, plus whole-database mutators (create/update/delete project,
+ * export/import all data).
+ *
+ * Backed by a Dexie live query over both the `projects` and `items` tables,
+ * so `projects` re-renders whenever either table changes.
+ *
+ * @returns `{ projects, isLoading, createProject, updateProject, deleteProject, exportData, importData }`:
+ *   - `projects` — {@link ProjectSummary}[] sorted by `createdAt` ascending (empty until loaded).
+ *   - `isLoading` — `true` during the initial fetch.
+ *   - `createProject(name)` — creates a project and resolves to it.
+ *   - `updateProject(projectId, name)` — renames a project and bumps `updatedAt`.
+ *   - `deleteProject(projectId)` — deletes a project and all of its items, atomically.
+ *   - `exportData()` — downloads all projects and items as a JSON file.
+ *   - `importData(file)` — replaces all projects and items with the contents of a
+ *     previously exported JSON file.
+ *
+ * @example
+ * ```tsx
+ * function ProjectList() {
+ *   const { projects, isLoading, createProject } = useProjects()
+ *   if (isLoading) return <Loading />
+ *   return (
+ *     <>
+ *       {projects.map((p) => <div key={p.id}>{p.name} ({p.completionPercentage}%)</div>)}
+ *       <button onClick={() => createProject('New project')}>Add</button>
+ *     </>
+ *   )
+ * }
+ * ```
+ */
 export function useProjects() {
   const projectSummaries = useLiveQuery<ProjectSummary[]>(async () => {
     const [projects, items] = await Promise.all([db.projects.toArray(), db.items.toArray()])
@@ -32,6 +64,7 @@ export function useProjects() {
     return projects
       .map((project) => {
         const projectItems = items.filter((item) => item.projectId === project.id)
+        // Tally items per column to derive counts and completion percentage below.
         const itemsByColumn = projectItems.reduce((counts, item) => {
           counts[item.column]++
           return counts
@@ -69,6 +102,7 @@ export function useProjects() {
   }, [])
 
   const deleteProject = useCallback(async (projectId: string) => {
+    // Delete items first so a crash mid-transaction never leaves orphans.
     await db.transaction('rw', db.projects, db.items, async () => {
       await db.items.where('projectId').equals(projectId).delete()
       await db.projects.delete(projectId)
@@ -78,6 +112,7 @@ export function useProjects() {
   const exportData = useCallback(async () => {
     const [projects, items] = await Promise.all([db.projects.toArray(), db.items.toArray()])
     const data: ExportedData = { projects, items }
+    // Trigger a browser download via a throwaway object URL and anchor click.
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const anchor = document.createElement('a')
@@ -91,6 +126,7 @@ export function useProjects() {
     const text = await file.text()
     const data = JSON.parse(text) as ExportedData
 
+    // Full replace: clear both tables before bulk-loading the import.
     await db.transaction('rw', db.projects, db.items, async () => {
       await db.projects.clear()
       await db.items.clear()
@@ -110,6 +146,23 @@ export function useProjects() {
   }
 }
 
+/**
+ * Live view of a single project (without item stats).
+ *
+ * @param projectId - Project to load. When `undefined`, `project` stays `undefined`.
+ * @returns `{ project, isLoading }` where `project` is the raw {@link Project}
+ *   record, and `isLoading` is `true` until the query resolves (including
+ *   when the project doesn't exist, since it resolves to `undefined` either way).
+ *
+ * @example
+ * ```tsx
+ * function ProjectHeader({ projectId }: { projectId: string }) {
+ *   const { project, isLoading } = useProject(projectId)
+ *   if (isLoading) return <Loading />
+ *   return <h1>{project?.name}</h1>
+ * }
+ * ```
+ */
 export function useProject(projectId: string | undefined) {
   const project = useLiveQuery(
     async () => (projectId ? await db.projects.get(projectId) : undefined),
