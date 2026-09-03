@@ -25,6 +25,40 @@ export type UpdateItemInput = Partial<
   Pick<ProjectItem, 'title' | 'description' | 'column' | 'startDate' | 'endDate' | 'position'>
 >
 
+/** Return value of {@link useProjectItems}. */
+export interface UseProjectItemsReturn {
+  /** Items belonging to the project, sorted by position. Empty until loaded. */
+  items: ProjectItem[]
+  /** `true` only during the initial fetch. */
+  isLoading: boolean
+}
+
+/** Return value of {@link useItem}. */
+export interface UseItemReturn {
+  /** The current item, or `undefined` while loading or missing. */
+  item: ProjectItem | undefined
+  /** `true` while an `itemId` is set but the item hasn't resolved yet. */
+  isLoading: boolean
+  /** Patches the item and bumps `updatedAt`. No-op if `itemId` is unset. */
+  updateItem: (updates: UpdateItemInput) => Promise<void>
+  /** Removes the item. No-op if `itemId` is unset. */
+  deleteItem: () => Promise<void>
+}
+
+/** Return value of {@link useItemActions}. */
+export interface UseItemActionsReturn {
+  /** Removes the item with the given id. */
+  deleteItem: (itemId: string) => Promise<void>
+  /** Moves the item to `column` and bumps `updatedAt`. */
+  moveItem: (itemId: string, column: ColumnStatus) => Promise<void>
+}
+
+/** Return value of {@link useCreateItem}. */
+export interface UseCreateItemReturn {
+  /** Persists a new item, applying defaults for omitted fields, and resolves to it. No-op resolving to `undefined` if `projectId` is unset. */
+  createItem: (input: CreateItemInput) => Promise<ProjectItem | undefined>
+}
+
 /**
  * Live list of all items belonging to a project, ordered by their Kanban position.
  *
@@ -46,7 +80,7 @@ export type UpdateItemInput = Partial<
  * }
  * ```
  */
-export function useProjectItems(projectId: string | undefined) {
+export function useProjectItems(projectId: string | undefined): UseProjectItemsReturn {
   const items = useLiveQuery(
     async () =>
       projectId
@@ -84,7 +118,7 @@ export function useProjectItems(projectId: string | undefined) {
  * }
  * ```
  */
-export function useItem(itemId: string | undefined) {
+export function useItem(itemId: string | undefined): UseItemReturn {
   const item = useLiveQuery(
     async () => (itemId ? await db.items.get(itemId) : undefined),
     [itemId],
@@ -129,7 +163,7 @@ export function useItem(itemId: string | undefined) {
  * }
  * ```
  */
-export function useItemActions() {
+export function useItemActions(): UseItemActionsReturn {
   const deleteItem = useCallback(async (itemId: string) => {
     await db.items.delete(itemId)
   }, [])
@@ -158,7 +192,7 @@ export function useItemActions() {
  * }
  * ```
  */
-export function useCreateItem(projectId: string | undefined) {
+export function useCreateItem(projectId: string | undefined): UseCreateItemReturn {
   const createItem = useCallback(
     async (input: CreateItemInput) => {
       if (!projectId) return undefined

@@ -30,6 +30,32 @@ export interface ProjectSummary {
   completionPercentage: number
 }
 
+/** Return value of {@link useProjects}. */
+export interface UseProjectsReturn {
+  /** Project summaries sorted by `createdAt` ascending. Empty until loaded. */
+  projects: ProjectSummary[]
+  /** `true` during the initial fetch. */
+  isLoading: boolean
+  /** Creates a project and resolves to it. */
+  createProject: (name: string) => Promise<Project>
+  /** Renames a project and bumps `updatedAt`. */
+  updateProject: (projectId: string, name: string) => Promise<void>
+  /** Deletes a project and all of its items, atomically. */
+  deleteProject: (projectId: string) => Promise<void>
+  /** Downloads all projects and items as a JSON file. */
+  exportData: () => Promise<void>
+  /** Replaces all projects and items with the contents of a previously exported JSON file. */
+  importData: (file: File) => Promise<void>
+}
+
+/** Return value of {@link useProject}. */
+export interface UseProjectReturn {
+  /** The current project, or `undefined` while loading or missing. */
+  project: Project | undefined
+  /** `true` until the query resolves (including when the project doesn't exist). */
+  isLoading: boolean
+}
+
 const emptyColumnCounts = (): Record<ColumnStatus, number> => ({
   todo: 0,
   'in-progress': 0,
@@ -69,7 +95,7 @@ const emptyColumnCounts = (): Record<ColumnStatus, number> => ({
  * }
  * ```
  */
-export function useProjects() {
+export function useProjects(): UseProjectsReturn {
   const projectSummaries = useLiveQuery<ProjectSummary[]>(async () => {
     const [projects, items] = await Promise.all([db.projects.toArray(), db.items.toArray()])
 
@@ -175,7 +201,7 @@ export function useProjects() {
  * }
  * ```
  */
-export function useProject(projectId: string | undefined) {
+export function useProject(projectId: string | undefined): UseProjectReturn {
   const project = useLiveQuery(
     async () => (projectId ? await db.projects.get(projectId) : undefined),
     [projectId],
