@@ -1,0 +1,9 @@
+* {
+  transition: none;
+  animation: none;
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+}
