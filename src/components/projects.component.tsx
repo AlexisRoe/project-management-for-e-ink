@@ -88,7 +88,11 @@ function ProjectCardUpdate({
           />
         </div>
         <div className="project-cards-actions">
-          <Button.Create onClick={handleCreate} disabled={isCreateDisabled} />
+          <Button.Create
+            onClick={handleCreate}
+            disabled={isCreateDisabled}
+            label={initialValue === "" ? "Create" : "Update"}
+          />
           <Button.Cancel onClick={onClose} />
         </div>
       </div>

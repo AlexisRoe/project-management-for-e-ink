@@ -4,6 +4,8 @@ import { BrowserRouter } from "react-router";
 
 import App from "./App.tsx";
 
+import "./index.css";
+
 import "@marcomattes/epaper-components";
 import "@marcomattes/epaper-components/styles/tokens.css";
 import "@marcomattes/epaper-components/styles/base.css";
