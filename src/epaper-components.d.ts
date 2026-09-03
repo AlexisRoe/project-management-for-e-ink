@@ -42,6 +42,15 @@ type ECardProps = Props<ECard> & {
   eyebrow?: string
 }
 
+type EProgressProps = Props<EProgress> & {
+  value?: string
+  max?: string
+  variant?: 'linear' | 'steps'
+  steps?: string
+  label?: string
+  'hide-label'?: boolean | string
+}
+
 type EInputProps = Props<EInput> & {
   label?: string
   hint?: string
@@ -134,7 +143,7 @@ declare module 'react' {
       'e-pagination': Props<EPagination>
       'e-popconfirm': Props<EPopconfirm>
       'e-popover': Props<EPopover>
-      'e-progress': Props<EProgress>
+      'e-progress': EProgressProps
       'e-qrcode': Props<EQrcode>
       'e-radio': Props<ERadio>
       'e-radio-group': Props<ERadioGroup>

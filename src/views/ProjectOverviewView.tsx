@@ -29,12 +29,12 @@ function ProjectOverviewView() {
       </Page.Header>
       <Page.Content>
         <ProjectGrid>
-          <ProjectCard.Create
+          <ProjectCard.Update
             isVisible={isCreateInitialiazed}
             onClose={() => setIsCreateInitialiazed(false)}
             onCreate={() => console.log('')}
           />
-          <ProjectCard title='test' total={2} />
+          <ProjectCard title='test' amountCompleted={2} amountTotal={3} />
         </ProjectGrid>
       </Page.Content>
     </Page>

@@ -2,6 +2,8 @@ import { useState, type JSX, type ReactElement } from 'react';
 
 import './Projects.components.css';
 import { Button, CancelButton, CreateButton } from './Button.component';
+import { Input } from './Input.component';
+import { ProgressBar } from './Progress.component';
 
 interface ProjectGridProps {
     children: ReactElement | ReactElement[];
@@ -11,13 +13,13 @@ export function ProjectGrid(props: ProjectGridProps): JSX.Element {
     return <div className='project-grid'>{props.children}</div>
 }
 
-interface ProjectCardCreateProps {
+interface ProjectCardUpdateProps {
     isVisible: boolean;
     onClose: () => void;
     onCreate: (label: string) => void;
 }
 
-function ProjectCardCreate({ isVisible, onClose, onCreate }: ProjectCardCreateProps): JSX.Element {
+function ProjectCardUpdate({ isVisible, onClose, onCreate }: ProjectCardUpdateProps): JSX.Element {
     const [value, setValue] = useState<string>('');
 
     if (isVisible === false) return <></>;
@@ -36,15 +38,11 @@ function ProjectCardCreate({ isVisible, onClose, onCreate }: ProjectCardCreatePr
             data-type='new-card'
         >
             <div className='project-cards-new-content'>
-                <e-input
+                <Input
                     label="Project name"
                     placeholder="Example"
-                    hint=""
-                    value={value}
-                    type="text"
-                    error=""
-                    onInput={(e) => setValue(e.currentTarget.value)}
-                ></e-input>
+                    onDebouncedChange={setValue}
+                />
                 <div className='project-cards-new-content-actions'>
                     <CreateButton onClick={handleCreate} disabled={isCreateDisabled} />
                     <CancelButton onClick={onClose} />
@@ -62,7 +60,8 @@ interface Items {
 }
 
 interface ProjectCardProps {
-    total: number;
+    amountCompleted: number;
+    amountTotal: number;
     // items: Items;
     // doneInPercent: number;
     // open: () => void;
@@ -76,13 +75,13 @@ function ProjectCard(props: ProjectCardProps): JSX.Element {
         <e-card
             className='project-cards'
             title={props.title}
-            eyebrow={`${props.total} ITEMS`}
+            eyebrow={`${props.amountCompleted} ITEMS`}
         >
-            <p>This is the card body. Add any content here.</p>
+            <ProgressBar value={30} />
         </e-card>
     );
 }
 
-ProjectCard.Create = ProjectCardCreate;
+ProjectCard.Update = ProjectCardUpdate;
 
 export { ProjectCard };
