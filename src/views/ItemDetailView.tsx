@@ -4,6 +4,7 @@ import { Title, TitleLabel } from '../components/Text.component'
 import { CancelButton, CreateButton, DeleteButton } from '../components/Button.component'
 import { useProject } from '../hooks/useProjects'
 import { useCreateItem, useItem } from '../hooks/useItems'
+import { Icon } from '../components/Icons.component'
 
 function ItemDetailView() {
   const { itemId } = useParams();
@@ -36,11 +37,14 @@ function ItemDetailView() {
     navigate(`/planning?projectId=${projectId}`)
   }
 
+  const leftIcon = <Icon variant='chevL' size='16' onClick={handleAbort} />
+
+
   return (
     <Page>
       <Page.Header>
         <Page.Header.Left>
-          <TitleLabel>{project?.name ?? 'LOCAL · NO ACCOUNT · NO NETWORK'}</TitleLabel>
+          <TitleLabel iconLeft={leftIcon}>{project?.name ?? 'LOCAL · NO ACCOUNT · NO NETWORK'}</TitleLabel>
           <Title>{isCreateMode ? 'New Item' : item?.title ?? 'Item'}</Title>
         </Page.Header.Left>
         <Page.Header.Right>

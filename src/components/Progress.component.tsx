@@ -1,6 +1,8 @@
 import type { JSX } from 'react/jsx-runtime';
 
 import './Progress.component.css';
+import { Mono } from './Text.component';
+import type { ReactElement } from 'react';
 
 interface ProgressBarProps {
     value: number;
@@ -45,4 +47,29 @@ export function ProgressBarLegend(props: ProgressBarLegendProps): JSX.Element {
             </div>
         </div>
     );
+}
+
+interface ProgressOverviewProps {
+    total: number;
+    done: number;
+}
+
+export function ProgressOverview({ total, done }: ProgressOverviewProps): JSX.Element {
+    const doneInPercent = total !== 0 ? done * 100 / total : 0;
+
+    return (
+        <div className='progress-overview'>
+            <Mono>{`${done}/${total} DONE`}</Mono>
+            <Mono>{`●`}</Mono>
+            <Mono>{`${doneInPercent}%`}</Mono>
+        </div>
+    );
+}
+
+interface ProgressContainerProps {
+    children: ReactElement | ReactElement[];
+}
+
+export function ProgressContainer({ children }: ProgressContainerProps): JSX.Element {
+    return <div className='progress-container'>{children}</div>
 }

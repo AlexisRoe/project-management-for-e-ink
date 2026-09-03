@@ -76,3 +76,21 @@ export function OpenButton({ onClick }: OpenButtonProps): JSX.Element {
         </>
     </Button>
 }
+
+interface AddButtonProps {
+    onClick: () => void;
+}
+
+export function AddButton({ onClick }: AddButtonProps): JSX.Element {
+    return <Button variant="primary" onClick={onClick}>
+        <Icon variant='plus' label="update or create" />
+    </Button>
+}
+
+interface BackButtonProps {
+    onClick: () => void;
+}
+
+export function BackButton({ onClick }: BackButtonProps): JSX.Element {
+    return <Button className='button-basic-reset' variant="secondary" onClick={onClick}>Back</Button>
+}

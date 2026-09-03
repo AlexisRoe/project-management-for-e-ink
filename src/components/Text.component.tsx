@@ -1,5 +1,7 @@
 import type { JSX, ReactElement } from "react";
 
+import './Text.component.css';
+
 interface TitleProps {
     /** Title label displayed to users */
     children: ReactElement | string;
@@ -16,8 +18,30 @@ export function Title(props: TitleProps): JSX.Element {
 interface TitleLabelProps {
     /** Label all in uppercase and styling */
     children: string;
+    /** Icon on the left */
+    iconLeft?: ReactElement
 }
 
 export function TitleLabel(props: TitleLabelProps): JSX.Element {
-    return <e-text kind="label" as="span">{props.children.toUpperCase()}</e-text>
+
+    if (props.iconLeft) {
+        return <div className="title-label-container">
+            {props.iconLeft}
+            <e-text kind="label" as="span">
+                {props.children.toUpperCase()}
+            </e-text>
+        </div>
+    }
+
+    return <e-text kind="label" as="span">
+        {props.children.toUpperCase()}
+    </e-text>
+}
+
+interface MonoProps {
+    children: string;
+}
+
+export function Mono({ children }: MonoProps): JSX.Element {
+    return <e-text kind="mono" as="span">{children}</e-text>
 }
