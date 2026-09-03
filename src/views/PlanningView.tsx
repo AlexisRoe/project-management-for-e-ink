@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import Page from '../components/Page.component'
 
 const items = [
   { id: '1', title: 'Buy tiles' },
@@ -8,16 +9,20 @@ const items = [
 
 function PlanningView() {
   return (
-    <section>
-      <h1>Planning</h1>
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>
-            <Link to={`/item/${item.id}`}>{item.title}</Link>
-          </li>
-        ))}
-      </ul>
-    </section>
+    <Page>
+      <Page.Header>
+        <h1>Planning</h1>
+      </Page.Header>
+      <Page.Content>
+        <ul>
+          {items.map((item) => (
+            <li key={item.id}>
+              <Link to={`/item/${item.id}`}>{item.title}</Link>
+            </li>
+          ))}
+        </ul>
+      </Page.Content>
+    </Page>
   )
 }
 

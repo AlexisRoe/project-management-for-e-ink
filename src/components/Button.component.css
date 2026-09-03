@@ -1,0 +1,4 @@
+.create-button-disabled > button {
+    background: lightgray;
+    background-image: none;
+}
