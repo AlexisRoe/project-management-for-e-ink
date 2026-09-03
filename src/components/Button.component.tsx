@@ -31,14 +31,15 @@ export function CancelButton({ onClick }: CancelButtonProps): JSX.Element {
 
 interface CreateButtonProps {
     onClick: () => void;
-    disabled: boolean;
+    disabled?: boolean;
+    label?: string;
 }
 
-export function CreateButton({ onClick, disabled }: CreateButtonProps): JSX.Element {
+export function CreateButton({ onClick, disabled = false, label = 'Create' }: CreateButtonProps): JSX.Element {
     return <Button className={disabled ? 'create-button-disabled' : undefined} onClick={onClick} disabled={disabled}>
         <>
             <Icon variant='check' label="Create" />
-            <span> Create</span>
+            <span>{` ${label}`}</span>
         </>
     </Button>
 }

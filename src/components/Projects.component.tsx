@@ -1,6 +1,7 @@
 import { useState, type JSX, type ReactNode } from 'react';
 
-import { CancelButton, CreateButton, DeleteButton, EditButton, OpenButton } from './Button.component';
+import { Button, CancelButton, CreateButton, DeleteButton, EditButton, OpenButton } from './Button.component';
+import { Icon } from './Icons.component';
 import { Input } from './Input.component';
 import { ProgressBar, ProgressBarLegend } from './Progress.component';
 
@@ -85,6 +86,7 @@ function sum(input: number[]): number {
 
 function ProjectCard(props: ProjectCardProps): JSX.Element {
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [isConfirmingDelete, setIsConfirmingDelete] = useState<boolean>(false);
 
     const total = sum(Object.values(props.items));
     const done = props.items.done;
@@ -95,7 +97,6 @@ function ProjectCard(props: ProjectCardProps): JSX.Element {
             <ProjectCardUpdate
                 isVisible
                 title={props.title}
-                eyebrow={`${total} ITEMS`}
                 initialValue={props.title}
                 onClose={() => setIsEditing(false)}
                 onCreate={(title) => props.actions.update(title)}
@@ -114,13 +115,27 @@ function ProjectCard(props: ProjectCardProps): JSX.Element {
                     <ProgressBar value={doneInPercent} />
                     <ProgressBarLegend doneInPercent={doneInPercent} label='done' amounts={props.items} />
                 </div>
-                <div className='project-cards-actions'>
-                    <div className='project-cards-actions-left'>
-                        <OpenButton onClick={props.actions.open} />
-                        <EditButton onClick={() => setIsEditing(true)} />
+                {isConfirmingDelete ? (
+                    <div className='project-cards-delete-confirm'>
+                        <div className='project-cards-delete-confirm-text'>Delete this project?</div>
+                        <div className='project-cards-actions-left'>
+                            <Button onClick={() => { props.actions.delete(); setIsConfirmingDelete(false); }}>
+                                <Icon variant='trash' label='confirm delete' />
+                            </Button>
+                            <Button variant='secondary' onClick={() => setIsConfirmingDelete(false)}>
+                                <Icon variant='close' label='cancel delete' />
+                            </Button>
+                        </div>
                     </div>
-                    <DeleteButton onClick={props.actions.delete} />
-                </div>
+                ) : (
+                    <div className='project-cards-actions'>
+                        <div className='project-cards-actions-left'>
+                            <OpenButton onClick={props.actions.open} />
+                            <EditButton onClick={() => setIsEditing(true)} />
+                        </div>
+                        <DeleteButton onClick={() => setIsConfirmingDelete(true)} />
+                    </div>
+                )}
             </div>
         </e-card>
     );

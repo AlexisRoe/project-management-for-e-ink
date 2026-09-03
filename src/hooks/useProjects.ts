@@ -1,7 +1,12 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useCallback } from 'react'
 import { db } from '../db/db'
-import type { ColumnStatus } from '../db/types'
+import type { ColumnStatus, Project, ProjectItem } from '../db/types'
+
+interface ExportedData {
+  projects: Project[]
+  items: ProjectItem[]
+}
 
 export interface ProjectSummary {
   id: string
@@ -70,12 +75,38 @@ export function useProjects() {
     })
   }, [])
 
+  const exportData = useCallback(async () => {
+    const [projects, items] = await Promise.all([db.projects.toArray(), db.items.toArray()])
+    const data: ExportedData = { projects, items }
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = `paperflow-export-${new Date().toISOString().slice(0, 10)}.json`
+    anchor.click()
+    URL.revokeObjectURL(url)
+  }, [])
+
+  const importData = useCallback(async (file: File) => {
+    const text = await file.text()
+    const data = JSON.parse(text) as ExportedData
+
+    await db.transaction('rw', db.projects, db.items, async () => {
+      await db.projects.clear()
+      await db.items.clear()
+      await db.projects.bulkAdd(data.projects)
+      await db.items.bulkAdd(data.items)
+    })
+  }, [])
+
   return {
     projects: projectSummaries ?? [],
     isLoading: projectSummaries === undefined,
     createProject,
     updateProject,
     deleteProject,
+    exportData,
+    importData,
   }
 }
 

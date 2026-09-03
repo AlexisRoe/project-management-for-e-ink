@@ -4,16 +4,23 @@ import { Button } from '../components/Button.component'
 import { Icon } from '../components/Icons.component'
 import { ProjectCard, ProjectGrid } from '../components/Projects.component'
 import { EmptyState } from '../components/EmptyState.component'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useProjects } from '../hooks/useProjects'
 
 function ProjectOverviewView() {
   const [isCreateInitialiazed, setIsCreateInitialiazed] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { projects, createProject, updateProject, deleteProject } = useProjects();
+  const { projects, createProject, updateProject, deleteProject, exportData, importData } = useProjects();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isEmpty = projects.length === 0 && !isCreateInitialiazed;
+
+  const handleImportFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) importData(file);
+    e.target.value = '';
+  };
 
   return (
     <Page>
@@ -23,12 +30,19 @@ function ProjectOverviewView() {
           <Title>Projects</Title>
         </Page.Header.Left>
         <Page.Header.Right>
-          <Button variant="secondary">
+          <Button variant="secondary" onClick={exportData}>
             <Icon variant="download" label="download data" />
           </Button>
-          <Button variant="secondary">
+          <Button variant="secondary" onClick={() => fileInputRef.current?.click()}>
             <Icon variant="upload" label="upload data" />
           </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json"
+            style={{ display: 'none' }}
+            onChange={handleImportFileSelected}
+          />
           <Button onClick={() => setIsCreateInitialiazed(true)}>
             <Icon variant="plus" label="add project" />
           </Button>
