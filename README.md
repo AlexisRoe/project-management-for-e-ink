@@ -13,6 +13,7 @@
 - [PaperFlow (E-Ink Project Manager)](#paperflow-e-ink-project-manager)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
+  - [Screenshots](#screenshots)
   - [Key Features](#key-features)
   - [Tech Stack](#tech-stack)
   - [Quickstart](#quickstart)
@@ -25,26 +26,42 @@
 
 ## Overview
 
-**PaperFlow** is a lightweight project management tool engineered from the ground up for low-refresh-rate, high-contrast e-paper displays (such as Onyx Boox, Kindle Fire, or custom e-ink setups). 
+**PaperFlow** is a lightweight project management tool engineered from the ground up for low-refresh-rate, high-contrast e-paper displays (such as Onyx Boox, Kindle Fire, or custom e-ink setups).
+
+It allow users to create their projects and tickets (items) and keep track of them accordingly in a distraction free way. My first e-ink orientated project. Its intentional simple and focussed on the interface for such display technology.
+
+
+## Screenshots
+
+|                                                                                             |                                                                                                  |
+| :-----------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: |
+|          **Project Overview** <br> ![Project overview](docs/project-overview.png)           |                **No Projects Yet** <br> ![Empty state](docs/no-projects-yet.png)                 |
+|      **Create a New Project** <br> ![Create new project](docs/create-new-project.png)       | **Update an Existing Project** <br> ![Update existing project](docs/update-existing-project.png) |
+|           **Create a New Item** <br> ![Create new item](docs/create-new-item.png)           |        **Edit an Existing Item** <br> ![Edit existing item](docs/edit-existing-item.png)         |
+| **Move Items Across Columns** <br> ![Move items in project](docs/move-items-in-project.png) |               **Delete a Project** <br> ![Delete project](docs/delete-project.png)               |
 
 
 ## Key Features
 
 - **E-Ink Optimized UI:** Uses high-contrast black-and-white layouts, sharp borders, and zero unnecessary animations to prevent display ghosting and refresh lag via `epaper-components.dev`.
-- **100% Local & Private:** All project data, tasks, and notes reside solely inside your browser’s IndexedDB. No servers, no telemetry, no subscription fees.
+- **100% Local & Private:** All project data, tasks, and notes reside solely inside your browser's IndexedDB. No servers, no telemetry, no subscription fees.
 - **Offline-First PWA:** Full service worker caching enables true offline functionality—install it directly onto your Android/e-ink tablet home screen.
-- **Lightweight & Fast:** Built with React and React Router for instant view transitions without heavy bundle overhead.
+- **Project & Item Management:** Create, rename, and delete projects; create and edit items within a project and move them across `To Do`, `In Progress`, `Testing`, and `Done` columns.
+- **Lightweight & Fast:** Built with React 19 and React Router for instant view transitions without heavy bundle overhead.
 
 
 ## Tech Stack
 
-| Category             | Technology                                                                         | Purpose                                     |
-| :------------------- | :--------------------------------------------------------------------------------- | :------------------------------------------ |
-| **Framework**        | [React 19](https://react.dev/)                                                     | Core UI library                             |
-| **Routing**          | [React Router v7](https://reactrouter.com/)                                        | Client-side routing                         |
-| **UI Components**    | [Epaper Components](https://epaper-components.dev)                                 | High-contrast, e-ink tailored UI primitives |
-| **Data Persistence** | [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)        | In-browser, local-first database            |
-| **PWA / Build**      | [Vite](https://vitejs.dev/) + [Vite PWA Plugin](https://vite-pwa-org.netlify.app/) | Service worker, caching, fast dev server    |
+| Category                 | Technology                                                                                                      | Purpose                                     |
+| :----------------------- | :-------------------------------------------------------------------------------------------------------------- | :------------------------------------------ |
+| **Framework**            | [React 19](https://react.dev/)                                                                                  | Core UI library                             |
+| **Routing**              | [React Router](https://reactrouter.com/)                                                                        | Client-side routing                         |
+| **UI Components**        | [Epaper Components](https://epaper-components.dev)                                                              | High-contrast, e-ink tailored UI primitives |
+| **Data Persistence**     | [Dexie.js](https://dexie.org/) over [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) | In-browser, local-first database            |
+| **PWA / Build**          | [Vite](https://vitejs.dev/) + [Vite PWA Plugin](https://vite-pwa-org.netlify.app/)                              | Service worker, caching, fast dev server    |
+| **Linting / Formatting** | [Biome](https://biomejs.dev/)                                                                                   | Linting and code formatting                 |
+| **Testing**              | [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/)                                 | Unit/component tests                        |
+| **Language**             | [TypeScript](https://www.typescriptlang.org/)                                                                   | Static typing                               |
 
 ## Quickstart
 
@@ -64,11 +81,11 @@ cd paperflow
 npm ci
 
 # 3. Start development server
-npm dev
+npm run dev
 
 ```
 
-Navigate to `http://localhost:5173` in your browser.
+Navigate to `http://localhost:9001` in your browser.
 
 
 ## Installation on E-Ink Devices
@@ -84,21 +101,27 @@ Since PaperFlow is a Progressive Web App, you do not need an app store:
 
 PaperFlow operates with **zero server dependencies**:
 
-* **Storage Engine:** All CRUD operations directly update IndexedDB via transactional queries.
+* **Storage Engine:** All CRUD operations go through [Dexie.js](https://dexie.org/), which wraps IndexedDB with transactional queries.
 * **No Network Lock-In:** Network requests are never attempted for core app features.
 
 
 ## Development & Testing
 
 ```bash
-# Run linter & formatter
-npm lint
+# Run linter
+npm run lint
+
+# Run tests
+npm run test
+
+# Run tests with coverage
+npm run coverage
 
 # Build production bundle & PWA assets
-npm build
+npm run build
 
 # Preview production build locally
-npm preview
+npm run preview
 
 ```
 
