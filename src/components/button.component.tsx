@@ -1,4 +1,4 @@
-import type { JSX, ReactElement } from "react";
+import type { JSX, ReactNode } from "react";
 import { Icon } from "./icons.component";
 
 import "./button.component.css";
@@ -12,7 +12,7 @@ interface BaseButtonProps {
 /** Props for {@link Button}. */
 interface ButtonProps {
   /** Button content — usually text and/or an {@link Icon}. */
-  children: ReactElement | string;
+  children: ReactNode;
   /** Visual style. Defaults to `'primary'`. */
   variant?: "primary" | "secondary";
   /** Button size. Defaults to `'default'`. */
